@@ -73,7 +73,7 @@ const TestRepository: React.FC = () => {
       <div className="w-[92%] max-w-7xl mx-auto">
         <div className="mb-12 border-l-4 border-blue-600 pl-6">
           <h2 className="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
-            ./test_case_repository.log
+            ./work_experiences.log
           </h2>
         </div>
 

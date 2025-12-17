@@ -6,11 +6,8 @@ const Footer: React.FC = () => {
   
   // Stato per la data e ora dinamica
   const [timestamp, setTimestamp] = useState(new Date().toLocaleString('it-IT'));
-
-  // Variabili per i tuoi link reali
-  const linkedinURL = "https://www.linkedin.com/in/fabio-antonio-saccone-42b94375";
-  const githubURL = "https://github.com/fabiosacc22";
-  const emailAddress = "fabiosaccone95@gmail.com";
+  // Stato per il feedback della copia email
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     // Aggiorna l'orario ogni minuto
@@ -20,6 +17,13 @@ const Footer: React.FC = () => {
 
     return () => clearInterval(timer);
   }, []);
+
+  const handleCopyEmail = (e: React.MouseEvent) => {
+    e.preventDefault(); // Impedisce l'apertura del client mail
+    navigator.clipboard.writeText(siteConfig.email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000); // Reset messaggio dopo 2 sec
+  };
 
   return (
     <footer className="w-full py-12 bg-gray-50 dark:bg-black border-t border-gray-200 dark:border-gray-800 font-mono transition-colors duration-300">
@@ -37,24 +41,24 @@ const Footer: React.FC = () => {
           </span>
         </div>
 
-        {/* Grid Layout: Ora con justify-between per distanziarle al massimo */}
-<div className="flex flex-col md:flex-row md:justify-between gap-10 text-sm">
-  
-  {/* Colonna Sinistra: System Info */}
-  <div className="space-y-2 min-w-[250px]">
-    <p className="text-gray-400 text-xs mb-3 uppercase tracking-tighter">// System_Info</p>
-    <p className="text-gray-500 dark:text-gray-400">
-      <span className="text-blue-600 dark:text-blue-400">➜</span> Last_Build: <span className="text-gray-900 dark:text-gray-100">{timestamp}</span>
-    </p>
-    <p className="text-gray-500 dark:text-gray-400">
-      <span className="text-blue-600 dark:text-blue-400">➜</span> Status: <span className="text-green-500">Success [0 Errors]</span>
-    </p>
-    <p className="text-gray-500 dark:text-gray-400">
-      <span className="text-blue-600 dark:text-blue-400">➜</span> Environment: <span className="text-gray-900 dark:text-gray-100 uppercase">Production</span>
-    </p>
-  </div>
+        {/* Grid Layout */}
+        <div className="flex flex-col md:flex-row md:justify-between gap-10 text-sm">
+          
+          {/* Colonna Sinistra: System Info */}
+          <div className="space-y-2 min-w-[250px]">
+            <p className="text-gray-400 text-xs mb-3 uppercase tracking-tighter">// System_Info</p>
+            <p className="text-gray-500 dark:text-gray-400">
+              <span className="text-blue-600 dark:text-blue-400">➜</span> Last_Build: <span className="text-gray-900 dark:text-gray-100">{timestamp}</span>
+            </p>
+            <p className="text-gray-500 dark:text-gray-400">
+              <span className="text-blue-600 dark:text-blue-400">➜</span> Status: <span className="text-green-500">Success [0 Errors]</span>
+            </p>
+            <p className="text-gray-500 dark:text-gray-400">
+              <span className="text-blue-600 dark:text-blue-400">➜</span> Environment: <span className="text-gray-900 dark:text-gray-100 uppercase">Production</span>
+            </p>
+          </div>
 
-  {/* Colonna Social Connections dinamica */}
+          {/* Colonna Social Connections dinamica */}
           <div className="space-y-2 min-w-[350px]">
             <p className="text-gray-400 text-xs mb-3 uppercase tracking-tighter">// Social_Connections</p>
             
@@ -69,14 +73,23 @@ const Footer: React.FC = () => {
                 const <span className="text-purple-600 dark:text-purple-400 uppercase">Github</span> = "<u>{siteConfig.githubUsername}</u>";
               </a>
               
-              <a href={`mailto:${siteConfig.email}`} 
-                 className="group text-gray-600 dark:text-gray-400 hover:text-blue-600 transition-colors">
-                const <span className="text-purple-600 dark:text-purple-400 uppercase">Email</span> = "<u>{siteConfig.email}</u>";
-              </a>
+              <div className="flex items-center gap-4">
+                <button onClick={handleCopyEmail}
+                   className="group text-gray-600 dark:text-gray-400 hover:text-blue-600 transition-colors text-left">
+                  const <span className="text-purple-600 dark:text-purple-400 uppercase">Email</span> = "<u>{siteConfig.email}</u>";
+                </button>
+                
+                {copied && (
+                  <span className="text-[10px] bg-green-500 text-white px-2 py-0.5 rounded animate-pulse">
+                    COPIED!
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </div>
 
+        {/* Footer Bottom */}
         <div className="mt-12 pt-6 border-t border-gray-100 dark:border-gray-900">
           <p className="text-[10px] text-gray-400 uppercase tracking-widest">
             © {currentYear} {siteConfig.name.toUpperCase()} — {siteConfig.role.toUpperCase()}
