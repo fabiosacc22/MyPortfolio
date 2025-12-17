@@ -3,6 +3,7 @@
 export const siteConfig = {
   name: "Fabio Antonio Saccone",
   role: "Software Tester & QA Automation Engineer",
+  profileImage: "/profileImage.jpeg",
   email: "fabiosaccone95@gmail.com",
   socials: {
     github: "https://github.com/fabiosacc22",
@@ -15,7 +16,8 @@ export const siteConfig = {
   hero: {
     titlePart1: "FABIO ANTONIO",
     titlePart2: "SACCONE",
-    description: "Software Tester & QA Automation Engineer. Analizzo, rompo e fortifico il codice per assicurarmi che ogni rilascio sia esente da errori e pronto per l'utente finale.",
+    description: `Software Tester & QA Automation Engineer. 
+    Specialized in identifying critical vulnerabilities and optimizing software quality. From manual API auditing with Postman and Charles Proxy to building robust automation suites with Selenium and Python, I ensure every release is bug-free and production-ready.`,
     command: "> init --qa-profile"
   },
 
@@ -27,7 +29,7 @@ export const siteConfig = {
     "API Testing / Postman",
     "Selenium",
     "Relational DBs",
-    "Log Analysis & Debugging",
-    "API Intercepting & Mocking (Charles)"
+    "Network Debugging (Charles Proxy)", 
+    "SQL & Data Validation",
   ]
 };
