@@ -11,8 +11,7 @@ interface HeaderProps {
 
 // 2. Aggiungiamo lang e setLang alle props del componente
 const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isOpen, setIsOpen] = useState(false);
+ 
   
   // --- LOGICA TYPING ---
   const fullText = "<fabio.saccone>";

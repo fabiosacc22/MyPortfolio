@@ -9,7 +9,7 @@ interface HeroProps {
   setLang: React.Dispatch<React.SetStateAction<'it' | 'en'>>;
 }
 
-const Hero: React.FC<HeroProps> = ({ lang, setLang }) => {
+const Hero: React.FC<HeroProps> = ({ lang }) => {
   // --- LOGICA LINGUA ---
   // Rimosso lo stato locale: ora usiamo lang e setLang dalle props
   const t = translations[lang].hero;
