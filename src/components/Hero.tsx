@@ -28,11 +28,18 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
   // --- LOGICA CLICK: EMISSIONE SEGNALE PER FOOTER ---
   const handleRunTest = () => {
     setIsScannerOpen(true);
-    // Invia il Custom Event intercettato dal Footer per incrementare gli errori
     window.dispatchEvent(new Event('run-test-suite'));
   };
 
-  // --- 1. SEQUENZA DI BOOT (COMANDO, BARRA, TITOLO) ---
+  // --- 1. NUOVO: SEGNALE PER SBLOCCARE TESTREPOSITORY ---
+  useEffect(() => {
+    if (animationsComplete) {
+      // Invia il segnale quando l'ultima skill ha finito di caricarsi
+      window.dispatchEvent(new Event('hero-animations-complete'));
+    }
+  }, [animationsComplete]);
+
+  // --- 2. SEQUENZA DI BOOT (COMANDO, BARRA, TITOLO) ---
   useEffect(() => {
     let timer: ReturnType<typeof setInterval>;
 
@@ -78,7 +85,7 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
     return () => clearInterval(timer);
   }, [bootStep, t.command, heroConfig]);
 
-  // --- 2. GESTIONE SCRITTURA DESCRIZIONE E ATTIVAZIONE CASCADE ---
+  // --- 3. GESTIONE SCRITTURA DESCRIZIONE E ATTIVAZIONE CASCADE ---
   useEffect(() => {
     if (bootStep === 4) {
       let i = 0;
@@ -110,7 +117,6 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
 
         <div className="w-[92%] max-w-7xl mx-auto flex flex-col items-center text-center py-20">
           
-          {/* TERMINALE */}
           <div className="mb-10 w-full max-w-sm text-left">
             <div className={`text-sm font-bold mb-2 transition-all duration-500 ${animationsComplete ? 'text-green-500' : 'text-blue-600'}`}>
               {animationsComplete && <span className="mr-2 animate-fadeIn">✔</span>}
@@ -131,7 +137,6 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
           <div className="flex flex-col items-center w-full">
             {bootStep >= 2 && (
               <>
-                {/* AVATAR & STATUS */}
                 <div className="relative mb-8 animate-fadeIn">
                   <div className="absolute -inset-2 border border-blue-500/30 rounded-full animate-pulse"></div>
                   <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-gray-900 dark:border-white overflow-hidden shadow-2xl relative z-10">
@@ -147,7 +152,6 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
                   {t.status}
                 </div>
 
-                {/* TITOLO & DESCRIZIONE */}
                 <h1 className="text-4xl md:text-8xl font-black tracking-tighter text-gray-900 dark:text-white mb-6 uppercase">
                   {titlePart1}<br />
                   {titlePart2 && <span className="bg-black dark:bg-white text-white dark:text-black px-4 py-1 inline-block mt-2">{titlePart2}.</span>}
@@ -158,11 +162,8 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
                   {!animationsComplete && bootStep === 4 && <span className="animate-pulse ml-1 inline-block h-5 w-1 bg-blue-600"></span>}
                 </p>
 
-                {/* BOTTONI E SKILLS */}
                 <div className="w-full flex flex-col items-center">
-                  
                   <div className="flex flex-col sm:flex-row gap-6 items-center justify-center w-full">
-                    {/* TRIGGER PER IL FOOTER */}
                     <button 
                       onClick={handleRunTest} 
                       style={{ transitionDelay: animationsComplete ? '0ms' : '150ms' }}
@@ -180,7 +181,6 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
                     </button>
                   </div>
 
-                  {/* SKILLS GRID */}
                   <div className="mt-20 w-full max-w-4xl mx-auto">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-gray-500 justify-items-center">
                       {techStack.map((item, index) => (

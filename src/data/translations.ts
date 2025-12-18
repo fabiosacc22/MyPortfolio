@@ -25,7 +25,7 @@ Specialized in identifying critical vulnerabilities and optimizing software qual
       sectionSub: "Deploying professional_background.sh ... READY",
       // --- Nuove chiavi snapshot ---
       snapshotTitle: "System_Snapshot",
-      snapshotEntries: "ENTRIES",
+      snapshotEntries: "WORK_EXPERIENCES",
       snapshotStatus: "DB_STATUS",
       snapshotSynced: "SYNCED",
       // ----------------------------
@@ -80,7 +80,7 @@ Specializzato nell'identificazione di vulnerabilità critiche e nell'ottimizzazi
       sectionSub: "Caricamento background_professionale.sh ... PRONTO",
       // --- Nuove chiavi snapshot ---
       snapshotTitle: "Snapshot_Sistema",
-      snapshotEntries: "VOCI",
+      snapshotEntries: "ESPERIENZE_LAVORATIVE",
       snapshotStatus: "STATO_DB",
       snapshotSynced: "SINCRONIZZATO",
       // ----------------------------
