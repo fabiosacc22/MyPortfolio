@@ -22,7 +22,7 @@ export const projectsData: { en: ProjectLog[]; it: ProjectLog[] } = {
       status: "RUNNING",
       description: "End-to-end validation of the Salesforce portal. Managing the full defect lifecycle and release coordination to ensure strict compliance with application requirements.",
       tools: ["Salesforce", "Micro Focus ALM", "Standard QA Suite"],
-      date: "Feb 2025 - Present",
+      date: "Feb 2025 - On going",
       logs: [
         "Syncing with Accenture/Unipol requirements...",
         "Defining Test Cases for Salesforce modules...",
@@ -39,7 +39,7 @@ export const projectsData: { en: ProjectLog[]; it: ProjectLog[] } = {
       status: "RUNNING",
       description: "Technical audit of banking integration flows. Database integrity verification and API endpoint validation to ensure maximum system stability and data consistency.",
       tools: ["Postman", "SQL", "API Integration", "Oracle DB"],
-      date: "Feb 2025 - Present",
+      date: "Feb 2025 - On going",
       logs: [
         "Establishing secure connection to DB...",
         "Validating API endpoints via Postman requests...",

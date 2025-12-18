@@ -25,8 +25,15 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
   const [descriptionText, setDescriptionText] = useState('');
   const [isScannerOpen, setIsScannerOpen] = useState(false);
 
+  // --- LOGICA CLICK: EMISSIONE SEGNALE PER FOOTER ---
+  const handleRunTest = () => {
+    setIsScannerOpen(true);
+    // Invia il Custom Event intercettato dal Footer per incrementare gli errori
+    window.dispatchEvent(new Event('run-test-suite'));
+  };
+
   // --- 1. SEQUENZA DI BOOT (COMANDO, BARRA, TITOLO) ---
-   useEffect(() => {
+  useEffect(() => {
     let timer: ReturnType<typeof setInterval>;
 
     if (bootStep === 0) {
@@ -86,10 +93,7 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
         if (i === fullText.length) {
           clearInterval(timer);
           setTimeout(() => {
-            // Questo triggera l'inizio della cascata (opacity 0 -> 100)
             setIsDescriptionDone(true);
-            
-            // Calcolo del tempo per resettare i delay (per l'hover istantaneo)
             const totalSkillsDelay = (techStack.length * 150) + 800;
             setTimeout(() => setAnimationsComplete(true), totalSkillsDelay);
           }, 400);
@@ -154,13 +158,13 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
                   {!animationsComplete && bootStep === 4 && <span className="animate-pulse ml-1 inline-block h-5 w-1 bg-blue-600"></span>}
                 </p>
 
-                {/* --- SEZIONE CASCATA: BOTTONI E SKILLS --- */}
+                {/* BOTTONI E SKILLS */}
                 <div className="w-full flex flex-col items-center">
                   
-                  {/* BOTTONI A COMPARSA */}
                   <div className="flex flex-col sm:flex-row gap-6 items-center justify-center w-full">
+                    {/* TRIGGER PER IL FOOTER */}
                     <button 
-                      onClick={() => setIsScannerOpen(true)} 
+                      onClick={handleRunTest} 
                       style={{ transitionDelay: animationsComplete ? '0ms' : '150ms' }}
                       className={`px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all font-bold uppercase text-sm transform
                         ${isDescriptionDone ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
@@ -176,7 +180,7 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
                     </button>
                   </div>
 
-                  {/* SKILLS GRID A CASCATA */}
+                  {/* SKILLS GRID */}
                   <div className="mt-20 w-full max-w-4xl mx-auto">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-gray-500 justify-items-center">
                       {techStack.map((item, index) => (
