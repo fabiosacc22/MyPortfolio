@@ -87,7 +87,7 @@ Specializzato nell'identificazione di vulnerabilità critiche e nell'ottimizzazi
       employer: "@_Azienda",
       activity: "Tipo_Attività",
       period: "Periodo_Temporale",
-      summary: "-- Sintesi_Missione --",
+      summary: "-- Sintesi Attività --",
       statusLabel: "STATO",
       runningMsg: "> ESECUZIONE_DIAGNOSTICA",
       consoleHeader: "OUTPUT_CONSOLE",
