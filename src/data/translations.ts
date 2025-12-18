@@ -66,7 +66,7 @@ Specialized in identifying critical vulnerabilities and optimizing software qual
       age: 30,
       location: "Valle di Maddaloni (CE), Italy",
       status: "Active",
-      hobbies: ["Football", "Tech", "TV Series", "Cooking"],
+      hobbies: ["Sport", "Tech", "TV Series", "Cooking"],
       current_focus: "QA Automation & Testing",
     },
     experience: {
@@ -168,7 +168,7 @@ Specializzato nell'identificazione di vulnerabilità critiche e nell'ottimizzazi
       age: 30,
       location: "Valle di Maddaloni (CE)",
       status: "Attivo",
-      hobbies: ["Calcetto", "Informatica", "Serie TV", "Cucina"],
+      hobbies: ["Sport", "Informatica", "Serie TV", "Cucina"],
       current_focus: "QA Automation & Testing",
     },
     experience: {
