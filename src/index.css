@@ -52,6 +52,14 @@ body, html, #root {
 .animate-fadeIn {
   animation: fadeIn 0.8s ease-out forwards;
 }
+::-webkit-scrollbar {
+  width: 4px; /* Molto sottile */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); /* Effetto Glow neon */
+}
 
 
 
