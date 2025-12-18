@@ -30,6 +30,11 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
     setIsScannerOpen(true);
     window.dispatchEvent(new Event('run-test-suite'));
   };
+  // Dentro il componente Hero, vicino a handleRunTest:
+const handleOpenCv = () => {
+  // lang è la prop che riceve il componente Hero ('it' o 'en')
+  window.open(`/cv/${lang}`, '_blank');
+};
 
   // --- 1. NUOVO: SEGNALE PER SBLOCCARE TESTREPOSITORY ---
   useEffect(() => {
@@ -173,12 +178,13 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
                       {t.ctaMain}
                     </button>
                     <button 
-                      style={{ transitionDelay: animationsComplete ? '0ms' : '300ms' }}
-                      className={`px-8 py-3 bg-transparent border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white rounded font-bold uppercase text-sm hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition-all transform
-                        ${isDescriptionDone ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
-                    >
-                      {t.ctaCv}
-                    </button>
+  onClick={handleOpenCv} 
+  style={{ transitionDelay: animationsComplete ? '0ms' : '300ms' }}
+  className={`px-8 py-3 bg-transparent border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white rounded font-bold uppercase text-sm hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition-all transform
+    ${isDescriptionDone ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+>
+  {t.ctaCv}
+</button>
                   </div>
 
                   <div className="mt-20 w-full max-w-4xl mx-auto">
