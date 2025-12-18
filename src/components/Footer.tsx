@@ -26,8 +26,7 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="w-full py-12 bg-gray-50 dark:bg-black border-t border-gray-200 dark:border-gray-800 font-mono transition-colors duration-300">
-      <div className="w-[92%] max-w-7xl mx-auto">
+<footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">      <div className="w-[92%] max-w-7xl mx-auto">
         
         {/* Terminal Header */}
         <div className="flex items-center gap-2 mb-8">

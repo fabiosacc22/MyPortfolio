@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { siteConfig } from '../data/config';
 import { translations } from '../data/translations';
 import TerminalOverlay from './TerminalOverlay';
@@ -9,80 +9,95 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ lang }) => {
-  const t = translations[lang].hero;
+  // --- CONFIGURAZIONE E TRADUZIONI ---
+  const t = useMemo(() => translations[lang].hero, [lang]);
   const { techStack, hero: heroConfig } = siteConfig;
 
+  // --- STATI DI CONTROLLO FLOW ---
   const [bootStep, setBootStep] = useState(0); 
-  const [, setCommandText] = useState('');
   const [progress, setProgress] = useState(0);
-  const [isScannerOpen, setIsScannerOpen] = useState(false);
+  const [isDescriptionDone, setIsDescriptionDone] = useState(false);
+  const [animationsComplete, setAnimationsComplete] = useState(false);
   
+  // --- STATI DEL CONTENUTO ---
   const [titlePart1, setTitlePart1] = useState('');
   const [titlePart2, setTitlePart2] = useState('');
   const [descriptionText, setDescriptionText] = useState('');
-  
-  const [isDescriptionDone, setIsDescriptionDone] = useState(false);
-  const [animationsComplete, setAnimationsComplete] = useState(false);
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
 
-  // 1. GESTIONE DESCRIZIONE E SBLOCCO FINALE
+  // --- 1. SEQUENZA DI BOOT (COMANDO, BARRA, TITOLO) ---
+   useEffect(() => {
+    let timer: ReturnType<typeof setInterval>;
+
+    if (bootStep === 0) {
+      let i = 0;
+      timer = setInterval(() => {
+        if (++i === t.command.length) {
+          clearInterval(timer);
+          setTimeout(() => setBootStep(1), 500);
+        }
+      }, 60);
+    } else if (bootStep === 1) {
+      timer = setInterval(() => {
+        setProgress(p => {
+          if (p >= 100) {
+            clearInterval(timer);
+            setTimeout(() => setBootStep(2), 300);
+            return 100;
+          }
+          return p + 10;
+        });
+      }, 30);
+    } else if (bootStep === 2) {
+      let i = 0;
+      timer = setInterval(() => {
+        setTitlePart1(heroConfig.titlePart1.slice(0, ++i));
+        if (i === heroConfig.titlePart1.length) {
+          clearInterval(timer);
+          setBootStep(3);
+        }
+      }, 50);
+    } else if (bootStep === 3) {
+      let i = 0;
+      timer = setInterval(() => {
+        setTitlePart2(heroConfig.titlePart2.slice(0, ++i));
+        if (i === heroConfig.titlePart2.length) {
+          clearInterval(timer);
+          setBootStep(4);
+        }
+      }, 50);
+    }
+
+    return () => clearInterval(timer);
+  }, [bootStep, t.command, heroConfig]);
+
+  // --- 2. GESTIONE SCRITTURA DESCRIZIONE E ATTIVAZIONE CASCADE ---
   useEffect(() => {
     if (bootStep === 4) {
       let i = 0;
       setIsDescriptionDone(false);
       setAnimationsComplete(false);
-      setDescriptionText(''); 
+      setDescriptionText('');
+
       const timer = setInterval(() => {
         const fullText = t.description;
-        setDescriptionText(fullText.slice(0, i + 1));
-        i++;
+        setDescriptionText(fullText.slice(0, ++i));
+        
         if (i === fullText.length) {
           clearInterval(timer);
           setTimeout(() => {
+            // Questo triggera l'inizio della cascata (opacity 0 -> 100)
             setIsDescriptionDone(true);
-            // Calcolo tempo basato sulle skills
-            const totalDelay = (techStack.length * 150) + 600;
-            setTimeout(() => setAnimationsComplete(true), totalDelay);
+            
+            // Calcolo del tempo per resettare i delay (per l'hover istantaneo)
+            const totalSkillsDelay = (techStack.length * 150) + 800;
+            setTimeout(() => setAnimationsComplete(true), totalSkillsDelay);
           }, 400);
         }
       }, 15);
       return () => clearInterval(timer);
     }
   }, [lang, bootStep, t.description, techStack.length]);
-
-  // 2. LOGICA DI BOOT (0-4)
-  useEffect(() => {
-    let timer: any;
-    if (bootStep === 0) {
-      let i = 0;
-      timer = setInterval(() => {
-        setCommandText(t.command.slice(0, i + 1));
-        if (++i === t.command.length) { 
-          clearInterval(timer); 
-          setTimeout(() => setBootStep(1), 500); 
-        }
-      }, 60);
-    } else if (bootStep === 1) {
-      timer = setInterval(() => {
-        setProgress(p => { 
-          if (p >= 100) { clearInterval(timer); setTimeout(() => setBootStep(2), 300); return 100; } 
-          return p + 10; 
-        });
-      }, 30);
-    } else if (bootStep === 2) {
-      let i = 0;
-      timer = setInterval(() => {
-        setTitlePart1(heroConfig.titlePart1.slice(0, i + 1));
-        if (++i === heroConfig.titlePart1.length) { clearInterval(timer); setBootStep(3); }
-      }, 50);
-    } else if (bootStep === 3) {
-      let i = 0;
-      timer = setInterval(() => {
-        setTitlePart2(heroConfig.titlePart2.slice(0, i + 1));
-        if (++i === heroConfig.titlePart2.length) { clearInterval(timer); setBootStep(4); }
-      }, 50);
-    }
-    return () => clearInterval(timer);
-  }, [bootStep, lang, t.command, heroConfig]);
 
   return (
     <>
@@ -91,13 +106,10 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
 
         <div className="w-[92%] max-w-7xl mx-auto flex flex-col items-center text-center py-20">
           
-          {/* TERMINALE SINCRONIZZATO */}
+          {/* TERMINALE */}
           <div className="mb-10 w-full max-w-sm text-left">
-            <div className={`text-sm font-bold mb-2 transition-all duration-500 ${
-              animationsComplete ? 'text-green-500' : 'text-blue-600'
-            }`}>
+            <div className={`text-sm font-bold mb-2 transition-all duration-500 ${animationsComplete ? 'text-green-500' : 'text-blue-600'}`}>
               {animationsComplete && <span className="mr-2 animate-fadeIn">✔</span>}
-              {/* FIX: Mostra il comando di init finché non è tutto completo */}
               {animationsComplete ? t.successMsg : t.command}
               {!animationsComplete && bootStep === 0 && <span className="animate-pulse">_</span>}
             </div>
@@ -105,9 +117,7 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
             {bootStep >= 1 && (
               <div className="w-full h-1 bg-gray-200 dark:bg-gray-800 rounded overflow-hidden">
                 <div 
-                  className={`h-full transition-all duration-500 ${
-                    animationsComplete ? 'bg-green-500' : 'bg-blue-600'
-                  }`} 
+                  className={`h-full transition-all duration-500 ${animationsComplete ? 'bg-green-500' : 'bg-blue-600'}`} 
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
@@ -117,6 +127,7 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
           <div className="flex flex-col items-center w-full">
             {bootStep >= 2 && (
               <>
+                {/* AVATAR & STATUS */}
                 <div className="relative mb-8 animate-fadeIn">
                   <div className="absolute -inset-2 border border-blue-500/30 rounded-full animate-pulse"></div>
                   <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-gray-900 dark:border-white overflow-hidden shadow-2xl relative z-10">
@@ -132,6 +143,7 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
                   {t.status}
                 </div>
 
+                {/* TITOLO & DESCRIZIONE */}
                 <h1 className="text-4xl md:text-8xl font-black tracking-tighter text-gray-900 dark:text-white mb-6 uppercase">
                   {titlePart1}<br />
                   {titlePart2 && <span className="bg-black dark:bg-white text-white dark:text-black px-4 py-1 inline-block mt-2">{titlePart2}.</span>}
@@ -142,35 +154,37 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
                   {!animationsComplete && bootStep === 4 && <span className="animate-pulse ml-1 inline-block h-5 w-1 bg-blue-600"></span>}
                 </p>
 
-                <div className={`w-full flex flex-col items-center transition-all duration-700 ${isDescriptionDone ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                {/* --- SEZIONE CASCATA: BOTTONI E SKILLS --- */}
+                <div className="w-full flex flex-col items-center">
                   
+                  {/* BOTTONI A COMPARSA */}
                   <div className="flex flex-col sm:flex-row gap-6 items-center justify-center w-full">
                     <button 
                       onClick={() => setIsScannerOpen(true)} 
-                      style={{ transitionDelay: animationsComplete ? '0ms' : '100ms' }}
-                      className={`px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all font-bold uppercase text-sm 
-                        ${isDescriptionDone ? 'opacity-100' : 'opacity-0'}`}
+                      style={{ transitionDelay: animationsComplete ? '0ms' : '150ms' }}
+                      className={`px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all font-bold uppercase text-sm transform
+                        ${isDescriptionDone ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
                     >
                       {t.ctaMain}
                     </button>
                     <button 
                       style={{ transitionDelay: animationsComplete ? '0ms' : '300ms' }}
-                      className={`px-8 py-3 bg-transparent border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white rounded font-bold uppercase text-sm hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition-all
-                        ${isDescriptionDone ? 'opacity-100' : 'opacity-0'}`}
+                      className={`px-8 py-3 bg-transparent border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white rounded font-bold uppercase text-sm hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition-all transform
+                        ${isDescriptionDone ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
                     >
                       {t.ctaCv}
                     </button>
                   </div>
 
+                  {/* SKILLS GRID A CASCATA */}
                   <div className="mt-20 w-full max-w-4xl mx-auto">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] text-gray-500 justify-items-center">
                       {techStack.map((item, index) => (
                         <div 
                           key={index} 
-                          style={{ transitionDelay: animationsComplete ? '0ms' : `${(index + 2) * 150}ms` }}
-                          className={`w-full border border-gray-200 dark:border-gray-800 p-4 rounded flex items-center justify-center cursor-default
-                            hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/10 transition-all duration-200
-                            ${isDescriptionDone ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+                          style={{ transitionDelay: animationsComplete ? '0ms' : `${(index + 3) * 150}ms` }}
+                          className={`w-full border border-gray-200 dark:border-gray-800 p-4 rounded flex items-center justify-center cursor-default hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/10 transition-all duration-300 transform
+                            ${isDescriptionDone ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'}`}
                         >
                           [ {item} ]
                         </div>
@@ -183,6 +197,7 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
           </div>
         </div>
       </section>
+
       <TerminalOverlay isOpen={isScannerOpen} onClose={() => setIsScannerOpen(false)} lang={lang} />
     </>
   );
