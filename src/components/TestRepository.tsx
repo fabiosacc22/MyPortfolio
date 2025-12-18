@@ -147,10 +147,21 @@ const TestRepository: React.FC<TestRepositoryProps> = ({ lang }) => {
             </p>
           </div>
           <div className="bg-white dark:bg-gray-900 p-4 border border-gray-200 dark:border-gray-800 rounded shadow-sm text-right">
-            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">System_Snapshot</p>
-            <p className="text-xs text-blue-600 font-black">ENTRIES: 0{currentExperiences.length}</p>
-            <p className="text-xs text-green-500 font-black">DB_STATUS: SYNCED</p>
-          </div>
+  {/* Titolo dello snapshot */}
+  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+    {translations[lang].experience.snapshotTitle}
+  </p>
+  
+  {/* Conteggio entries */}
+  <p className="text-xs text-blue-600 font-black">
+    {translations[lang].experience.snapshotEntries}: 0{projectsData[lang].length}
+  </p>
+  
+  {/* Stato del Database */}
+  <p className="text-xs text-green-500 font-black">
+    {translations[lang].experience.snapshotStatus}: {translations[lang].experience.snapshotSynced}
+  </p>
+</div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">

@@ -103,22 +103,7 @@ const Hero: React.FC<HeroProps> = ({ lang, setLang }) => {
       <section className="relative w-full min-h-[85vh] flex items-center justify-center bg-white dark:bg-gray-900 transition-colors duration-300 overflow-hidden font-mono">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] -z-10"></div>
 
-        {/* --- LANGUAGE SWITCHER FLOAT --- */}
-        <div className="absolute top-8 right-8 flex gap-2 z-50">
-          {(['it', 'en'] as const).map((l) => (
-            <button
-              key={l}
-              onClick={() => setLang(l)}
-              className={`text-[10px] font-bold px-2 py-1 rounded border transition-all ${
-                lang === l 
-                ? 'bg-blue-600 border-blue-600 text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' 
-                : 'bg-transparent border-gray-300 dark:border-gray-700 text-gray-400 hover:border-blue-500'
-              }`}
-            >
-              {l.toUpperCase()}
-            </button>
-          ))}
-        </div>
+       
 
         <div className="w-[92%] max-w-7xl mx-auto flex flex-col items-center text-center py-20">
           {/* TERMINALE DI AVVIO */}

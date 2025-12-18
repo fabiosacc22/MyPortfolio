@@ -7,16 +7,24 @@ interface LanguageSwitcherProps {
 
 const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ lang, setLang }) => {
   return (
-    <div className="fixed top-6 right-20 z-50 font-mono text-[10px] flex gap-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur p-1 border border-gray-200 dark:border-gray-800 rounded shadow-sm">
+    <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 border border-gray-200 dark:border-gray-700 rounded-lg font-mono text-[10px]">
       <button 
         onClick={() => setLang('it')}
-        className={`px-2 py-1 rounded ${lang === 'it' ? 'bg-blue-600 text-white' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
+        className={`px-2 py-1 rounded transition-all ${
+          lang === 'it' 
+            ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm font-bold' 
+            : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+        }`}
       >
         IT
       </button>
       <button 
         onClick={() => setLang('en')}
-        className={`px-2 py-1 rounded ${lang === 'en' ? 'bg-blue-600 text-white' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
+        className={`px-2 py-1 rounded transition-all ${
+          lang === 'en' 
+            ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-400 shadow-sm font-bold' 
+            : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+        }`}
       >
         EN
       </button>

@@ -3,17 +3,16 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import TestRepository from './components/TestRepository';
 import Footer from './components/Footer';
-import LanguageSwitcher from './components/LanguageSwitcher';
+
 
 const App: React.FC = () => {
   const [lang, setLang] = useState<'it' | 'en'>('en');
   return (
     
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-      <LanguageSwitcher lang={lang} setLang={setLang} />
       
       <main>
-        <Header lang={lang} />
+        <Header lang={lang} setLang={setLang} />
        {/* Passa setLang all'Hero per il selettore */}
        <Hero lang={lang} setLang={setLang} /> 
        

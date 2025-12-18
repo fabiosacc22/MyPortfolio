@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ThemeToggle from './ThemeToggle'; 
-import { useEffect } from 'react';
 import ProfileDropdown from './ProfileDropdown';
+import LanguageSwitcher from './LanguageSwitcher';
 
-// 1. Definiamo l'interfaccia per ricevere la lingua
+// 1. Definiamo l'interfaccia includendo setLang
 interface HeaderProps {
   lang: 'it' | 'en';
+  setLang: (lang: 'it' | 'en') => void; // <--- AGGIUNTO
 }
 
-// 2. Aggiungiamo { lang } alle props del componente
-const Header: React.FC<HeaderProps> = ({ lang }) => {
+// 2. Aggiungiamo lang e setLang alle props del componente
+const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isOpen, setIsOpen] = useState(false);
   
   // --- LOGICA TYPING ---
@@ -37,12 +39,10 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
     <header className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 w-full sticky top-0 z-50 h-20 transition-colors duration-300">
       <div className="w-[92%] max-w-7xl mx-auto h-full flex items-center justify-between relative">
         
-        {/* LOGO - Resta a sinistra con ProfileDropdown integrato */}
+        {/* SINISTRA - Logo con ProfileDropdown */}
         <div className="flex items-center z-50">
-          {/* Ora 'lang' è correttamente definita e passata */}
           <ProfileDropdown lang={lang}>
             <div className="flex items-center cursor-pointer group">
-              {/* Icona quadrata opzionale (stile cartella o file) */}
               <div className="mr-3 w-8 h-8 bg-gray-900 dark:bg-white flex items-center justify-center rounded shadow-[2px_2px_0px_0px_rgba(59,130,246,1)]">
                 <span className="text-white dark:text-black font-black text-xs">JS</span>
               </div>
@@ -55,9 +55,16 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
           </ProfileDropdown>
         </div>
 
-        {/* DESTRA - Solo il ThemeToggle */}
-        <div className="z-20">
-          <ThemeToggle />
+        {/* DESTRA - Switcher + ThemeToggle */}
+        <div className="flex items-center gap-4">
+          {/* Ora setLang è disponibile e può essere passato */}
+          <LanguageSwitcher lang={lang} setLang={setLang} />
+          
+          <div className="h-6 w-[1px] bg-gray-200 dark:bg-gray-800 mx-1"></div>
+          
+          <div className="z-20">
+            <ThemeToggle />
+          </div>
         </div>
 
       </div>
