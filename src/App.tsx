@@ -10,6 +10,9 @@ import TestInAction from './components/TestInAction';
 import Contact from './components/Contact';
 import CommandPalette from './components/CommandPalette';
 import BugEasterEgg from './components/BugEasterEgg';
+import Reveal from './components/Reveal';
+import ScrollProgress from './components/ScrollProgress';
+import CustomCursor from './components/CustomCursor';
 import { Analytics } from '@vercel/analytics/react';
 
 const App: React.FC = () => {
@@ -25,13 +28,15 @@ const App: React.FC = () => {
             <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
               <main>
                 <MouseTorch />
+                <ScrollProgress />
                 <Header lang={lang} setLang={setLang} />
                 <Hero lang={lang} setLang={setLang} /> 
                 <TestRepository lang={lang} />
-                <TestInAction lang={lang} />
-                <Contact lang={lang} />
+                <Reveal><TestInAction lang={lang} /></Reveal>
+                <Reveal><Contact lang={lang} /></Reveal>
               </main>
               <Footer />
+              <CustomCursor />
               <CommandPalette lang={lang} setLang={setLang} />
               <BugEasterEgg lang={lang} />
               <Analytics />
