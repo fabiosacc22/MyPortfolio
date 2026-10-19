@@ -17,15 +17,15 @@ const TerminalOverlay: React.FC<TerminalOverlayProps> = ({ isOpen, onClose, lang
   const fullLogs = t.logs;
 
   useEffect(() => {
-    if (isOpen) {
+    if (!isOpen) return;
+    const timers = fullLogs.map((log, index) =>
+      setTimeout(() => setLogs(prev => [...prev, log]), index * 450)
+    );
+    return () => {
+      timers.forEach(clearTimeout);
       setLogs([]);
-      fullLogs.forEach((log: string, index: number) => {
-        setTimeout(() => {
-          setLogs(prev => [...prev, log]);
-        }, index * 450); 
-      });
-    }
-  }, [isOpen, fullLogs]); // Aggiunto fullLogs alle dipendenze
+    };
+  }, [isOpen, fullLogs]);
 
   if (!isOpen) return null;
 

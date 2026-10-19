@@ -1,50 +1,45 @@
 import React, { useState, useEffect, useRef, memo } from 'react';
-import { projectsData } from '../data/experiences';
+import { projectsData, type ProjectLog } from '../data/experiences';
 import { translations } from '../data/translations';
 
 interface TestRepositoryProps { lang: 'it' | 'en'; }
 
 // --- 1. COMPONENTE TYPEWRITER BLINDATO ---
 const TypewriterText = memo(({ text, speed = 15, onComplete }: { text: string; speed?: number; onComplete?: () => void }) => {
-  const [displayedText, setDisplayedText] = useState('');
-  const [isFinished, setIsFinished] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const indexRef = useRef(0);
-
-  // Reset totale solo se cambia il testo (es. cambio lingua)
-  useEffect(() => {
-    setDisplayedText('');
-    setIsFinished(false);
-    indexRef.current = 0;
-  }, [text]);
+  // Il progresso è legato al testo: cambiando testo (es. cambio lingua) riparte da zero
+  const [progress, setProgress] = useState({ text: '', count: 0 });
+  const onCompleteRef = useRef(onComplete);
 
   useEffect(() => {
-    if (isFinished || !text) return;
+    onCompleteRef.current = onComplete;
+  });
 
-    timerRef.current = setInterval(() => {
-      const nextChar = text.slice(0, indexRef.current + 1);
-      setDisplayedText(nextChar);
-      indexRef.current += 1;
-
-      if (indexRef.current >= text.length) {
-        if (timerRef.current) clearInterval(timerRef.current);
-        setIsFinished(true);
-        if (onComplete) onComplete();
+  useEffect(() => {
+    if (!text) return;
+    let count = 0;
+    const timer = setInterval(() => {
+      count += 1;
+      setProgress({ text, count });
+      if (count >= text.length) {
+        clearInterval(timer);
+        onCompleteRef.current?.();
       }
     }, speed);
+    return () => clearInterval(timer);
+  }, [text, speed]);
 
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [text, speed, isFinished]); // Rimosso onComplete dalle dipendenze per evitare loop
-
-  return <>{displayedText}</>;
+  const count = progress.text === text ? progress.count : 0;
+  return <>{text.slice(0, count)}</>;
 });
 
 // --- 2. GESTORE LOG ---
 const LogTerminal = memo(({ logs, active }: { logs: string[]; active: boolean }) => {
   const [currentLine, setCurrentLine] = useState(0);
-  useEffect(() => { if (!active) setCurrentLine(0); }, [active]);
+  const [prevActive, setPrevActive] = useState(active);
+  if (prevActive !== active) {
+    setPrevActive(active);
+    if (!active) setCurrentLine(0);
+  }
 
   return (
     <div className="space-y-1.5 p-4 bg-gray-950 rounded-lg border border-gray-800">
@@ -65,18 +60,25 @@ const LogTerminal = memo(({ logs, active }: { logs: string[]; active: boolean })
 });
 
 // --- 3. COMPONENTE CARD ---
-const TestCard = memo(({ project, t, isActive, isVisible, onAllTextComplete }: any) => {
+interface TestCardProps {
+  project: ProjectLog;
+  t: Record<string, string>;
+  isActive: boolean;
+  isVisible: boolean;
+  onAllTextComplete: () => void;
+}
+
+const TestCard = memo(({ project, t, isActive, isVisible, onAllTextComplete }: TestCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [phase, setPhase] = useState(0); 
   const isCompleteRef = useRef(false);
 
+  if (isActive && phase === 0) setPhase(1);
+  if (!isVisible && phase !== 0) setPhase(0);
+
   useEffect(() => {
-    if (isActive && phase === 0) setPhase(1);
-    if (!isVisible) {
-      setPhase(0);
-      isCompleteRef.current = false;
-    }
-  }, [isActive, isVisible, phase]);
+    if (!isVisible) isCompleteRef.current = false;
+  }, [isVisible]);
 
   const handlePhaseComplete = (nextPhase: number) => {
     setPhase(nextPhase);
@@ -147,21 +149,24 @@ const TestCard = memo(({ project, t, isActive, isVisible, onAllTextComplete }: a
 // --- 4. REPOSITORY PRINCIPALE ---
 const TestRepository: React.FC<TestRepositoryProps> = ({ lang }) => {
   const t = translations[lang].experience;
-  const currentExperiences = (projectsData as any)[lang];
+  const currentExperiences = projectsData[lang];
   const sectionRef = useRef<HTMLElement>(null);
   
   const [heroFinished, setHeroFinished] = useState(false);
   const [hasScrolledIn, setHasScrolledIn] = useState(false);
   const [activeCardIndex, setActiveCardIndex] = useState(-1);
-  const [typingSubtitle, setTypingSubtitle] = useState(false);
   const [isPronto, setIsPronto] = useState(false);
 
   // Reset al cambio lingua
-  useEffect(() => {
+  const [prevLang, setPrevLang] = useState(lang);
+  if (prevLang !== lang) {
+    setPrevLang(lang);
     setActiveCardIndex(-1);
-    setTypingSubtitle(false);
     setIsPronto(false);
-  }, [lang]);
+  }
+
+  // Avvio sequenza sottotitolo
+  const typingSubtitle = heroFinished && hasScrolledIn;
 
   useEffect(() => {
     const handleHero = () => setHeroFinished(true);
@@ -173,13 +178,6 @@ const TestRepository: React.FC<TestRepositoryProps> = ({ lang }) => {
       observer.disconnect();
     };
   }, []);
-
-  // Avvio sequenza sottotitolo
-  useEffect(() => {
-    if (heroFinished && hasScrolledIn && activeCardIndex === -1 && !typingSubtitle) {
-      setTypingSubtitle(true);
-    }
-  }, [heroFinished, hasScrolledIn, activeCardIndex, typingSubtitle]);
 
   return (
     <section ref={sectionRef} className="w-full py-24 bg-white dark:bg-gray-900 font-mono">
@@ -212,7 +210,7 @@ const TestRepository: React.FC<TestRepositoryProps> = ({ lang }) => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {currentExperiences.map((project: any, index: number) => (
+          {currentExperiences.map((project, index) => (
             <TestCard 
               key={`${lang}-${project.id}`} 
               project={project} 

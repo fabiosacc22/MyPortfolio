@@ -60,7 +60,7 @@ const Curriculum: React.FC = () => {
         <section className="mb-12">
           <h2 className="text-xs font-bold text-gray-600 mb-8 tracking-widest uppercase italic border-l-4 border-blue-600 pl-4">{t.expLogTitle}</h2>
           <div className="pl-4 space-y-10 border-l border-gray-800">
-            {t.experiences.map((exp: any, idx: number) => (
+            {t.experiences.map((exp, idx) => (
               <div key={idx} className="relative pl-8">
                 <div className={`absolute -left-[5px] top-1.5 w-2 h-2 rounded-full ${idx === 0 ? 'bg-blue-600 shadow-[0_0_8px_#2563eb]' : 'bg-gray-700'}`}></div>
                 <div className="flex justify-between mb-1">
@@ -69,7 +69,7 @@ const Curriculum: React.FC = () => {
                 </div>
                 <p className="text-blue-500 text-xs font-bold mb-3 italic">{exp.company}</p>
                 <div className="text-[11px] text-gray-400 space-y-2">
-                  {exp.details.map((det: any, i: number) => (
+                  {exp.details.map((det, i) => (
                     <p key={i}><span className="text-gray-300 font-bold">{det.label}</span> {det.text}</p>
                   ))}
                 </div>

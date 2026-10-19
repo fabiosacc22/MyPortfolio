@@ -1,6 +1,6 @@
 // src/data/translations.ts
 
-export const translations: any = {
+export const translations = {
   en: {
     hero: {
       command: "> init --qa-profile",
