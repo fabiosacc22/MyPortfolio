@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { translations } from '../data/translations';
+import { siteConfig } from '../data/config';
 
 const Curriculum: React.FC = () => {
   const { lang } = useParams<{ lang: string }>();
@@ -29,15 +30,15 @@ const Curriculum: React.FC = () => {
         <section className="mb-12 border-b border-gray-200 dark:border-gray-800 pb-10 flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex items-center gap-6">
             <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-2 border-blue-600 p-1 overflow-hidden bg-gray-100 dark:bg-gray-800">
-              <img src="/profileImage.jpeg" alt="Fabio Saccone" className="w-full h-full object-cover object-top rounded-full" />
+              <img src="/profileImage.jpeg" alt={siteConfig.name} className="w-full h-full object-cover object-top rounded-full" />
             </div>
             <div>
-              <h1 className="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">Fabio Antonio Saccone</h1>
-              <p className="text-blue-600 dark:text-blue-500 font-bold text-sm uppercase tracking-widest">Software QA Tester Specialist</p>
+              <h1 className="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">{siteConfig.name}</h1>
+              <p className="text-blue-600 dark:text-blue-500 font-bold text-sm uppercase tracking-widest">{siteConfig.role}</p>
             </div>
           </div>
           <div className="text-[11px] font-bold space-y-1 text-right">
-            <p><span className="text-gray-500 dark:text-gray-600">EMAIL:</span> <span className="text-blue-600 dark:text-blue-400">fabiosaccone95@gmail.com</span></p>
+            <p><span className="text-gray-500 dark:text-gray-600">EMAIL:</span> <span className="text-blue-600 dark:text-blue-400">{siteConfig.email}</span></p>
             <p><span className="text-gray-500 dark:text-gray-600">{t.phoneLabel}</span> <span className="text-blue-600 dark:text-blue-400">{t.phoneValue}</span></p>
             <p><span className="text-gray-500 dark:text-gray-600 uppercase">{t.statusLabel}</span> <span className="text-green-600 dark:text-green-500">{t.statusValue}</span></p>
           </div>

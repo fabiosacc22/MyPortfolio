@@ -10,6 +10,8 @@ interface HeaderProps {
 }
 
 // 2. Aggiungiamo lang e setLang alle props del componente
+const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform);
+
 const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
  
   
@@ -57,6 +59,14 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
         {/* DESTRA - Switcher + ThemeToggle */}
         <div className="flex items-center gap-4">
           {/* Ora setLang è disponibile e può essere passato */}
+          <button
+            onClick={() => window.dispatchEvent(new Event('open-palette'))}
+            aria-label="Command palette"
+            className="hidden sm:flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-[10px] font-mono text-gray-500 hover:text-blue-600 hover:border-blue-500/50 transition-colors"
+          >
+            <span>&gt;_</span>
+            <kbd className="font-bold">{isMac ? '⌘ K' : 'Ctrl K'}</kbd>
+          </button>
           <LanguageSwitcher lang={lang} setLang={setLang} />
           
           <div className="h-6 w-[1px] bg-gray-200 dark:bg-gray-800 mx-1"></div>

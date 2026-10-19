@@ -10,7 +10,7 @@ export const siteConfig = {
     linkedin: "https://www.linkedin.com/in/fabio-antonio-saccone-42b94375",
   },
   githubUsername: "@fabiosacc22",
-  linkedinUsername: "/in/fabio-saccone",
+  linkedinUsername: "/in/fabio-antonio-saccone-42b94375",
   
   // Dati specifici per la Hero
   hero: {
