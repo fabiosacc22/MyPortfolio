@@ -27,10 +27,12 @@ Specialized in identifying critical vulnerabilities and optimizing software qual
       experiences: [
         {
           role: "Quality Assurance",
-          company: "ING-Bank",
+          company: "ING-Bank (Milan - Remote)",
           period: "[ 02/2026 - ON GOING ]",
           details: [
-            { label: ">", text: "API testing with Postman and data verification across the various databases." }
+            { label: ">", text: "Design and execution of API test suites with Postman, validating requests, responses, status codes and business rules." },
+            { label: ">", text: "Data integrity verification across multiple databases, ensuring consistency between API output and persisted records." },
+            { label: ">", text: "Defect reporting and retest cycles in collaboration with development and business teams." }
           ]
         },
         {
@@ -138,10 +140,12 @@ Specializzato nell'identificazione di vulnerabilità critiche e nell'ottimizzazi
       experiences: [
         {
           role: "Quality Assurance",
-          company: "ING-Bank",
+          company: "ING-Bank (Milano - Remoto)",
           period: "[ 02/2026 - IN CORSO ]",
           details: [
-            { label: ">", text: "Test delle API tramite Postman e verifiche dei dati sui vari database." }
+            { label: ">", text: "Progettazione ed esecuzione di test suite API con Postman, validando richieste, risposte, status code e regole di business." },
+            { label: ">", text: "Verifica dell'integrità dei dati su più database, garantendo la coerenza tra output delle API e record persistiti." },
+            { label: ">", text: "Segnalazione dei defect e cicli di retest in collaborazione con i team di sviluppo e di business." }
           ]
         },
         {
