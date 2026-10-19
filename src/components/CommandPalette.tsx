@@ -40,7 +40,6 @@ const PaletteDialog: React.FC<CommandPaletteProps & { onClose: () => void }> = (
     } },
     { id: 'linkedin', label: t.commands.linkedin, keywords: 'linkedin social', run: () => window.open(siteConfig.socials.linkedin, '_blank') },
     { id: 'github', label: t.commands.github, keywords: 'github git code social', run: () => window.open(siteConfig.socials.github, '_blank') },
-    { id: 'bug', label: t.commands.bug, keywords: 'bug report jira segnala', run: () => window.dispatchEvent(new Event('open-bug-report')) },
   ], [t, lang, setLang]);
 
   const results = useMemo(() => {
@@ -133,6 +132,12 @@ const PaletteDialog: React.FC<CommandPaletteProps & { onClose: () => void }> = (
   );
 };
 
+// Durante il caricamento iniziale e la sequenza della Hero la navigazione è bloccata: niente palette
+const isNavigationLocked = () => {
+  const cls = document.documentElement.classList;
+  return cls.contains('is-loading') || cls.contains('hero-locked');
+};
+
 const CommandPalette: React.FC<CommandPaletteProps> = (props) => {
   const [open, setOpen] = useState(false);
 
@@ -140,10 +145,11 @@ const CommandPalette: React.FC<CommandPaletteProps> = (props) => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
+        if (isNavigationLocked()) return;
         setOpen(prev => !prev);
       }
     };
-    const onOpen = () => setOpen(true);
+    const onOpen = () => { if (!isNavigationLocked()) setOpen(true); };
     window.addEventListener('keydown', onKey);
     window.addEventListener('open-palette', onOpen);
     return () => {

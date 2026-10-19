@@ -1,8 +1,17 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { useState, useEffect, useRef, memo, useSyncExternalStore } from 'react';
 import { projectsData, type ProjectLog } from '../data/experiences';
 import { translations } from '../data/translations';
 
 interface TestRepositoryProps { lang: 'it' | 'en'; }
+
+// Schermi stretti (mobile): le card diventano un carosello a scorrimento laterale
+const MOBILE_QUERY = '(max-width: 767px)';
+const subscribeMobile = (cb: () => void) => {
+  const mq = window.matchMedia(MOBILE_QUERY);
+  mq.addEventListener('change', cb);
+  return () => mq.removeEventListener('change', cb);
+};
+const useIsMobile = () => useSyncExternalStore(subscribeMobile, () => window.matchMedia(MOBILE_QUERY).matches);
 
 // --- 1. COMPONENTE TYPEWRITER BLINDATO ---
 const TypewriterText = memo(({ text, speed = 15, onComplete }: { text: string; speed?: number; onComplete?: () => void }) => {
@@ -192,12 +201,21 @@ const TestRepository: React.FC<TestRepositoryProps> = ({ lang }) => {
   const [activeCardIndex, setActiveCardIndex] = useState(-1);
   const [isPronto, setIsPronto] = useState(false);
 
+  // Carosello (solo mobile): card già mostrate all'utente e slide corrente
+  const isMobile = useIsMobile();
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const completedRef = useRef(new Set<string>());
+  const [seen, setSeen] = useState<Set<number>>(new Set());
+  const [currentSlide, setCurrentSlide] = useState(0);
+
   // Reset al cambio lingua
   const [prevLang, setPrevLang] = useState(lang);
   if (prevLang !== lang) {
     setPrevLang(lang);
     setActiveCardIndex(-1);
     setIsPronto(false);
+    setSeen(new Set());
+    setCurrentSlide(0);
   }
 
   // Avvio sequenza sottotitolo
@@ -213,6 +231,44 @@ const TestRepository: React.FC<TestRepositoryProps> = ({ lang }) => {
       observer.disconnect();
     };
   }, []);
+
+  // Su mobile ogni card si "scrive" quando entra nel carosello (almeno il 60% visibile)
+  useEffect(() => {
+    const el = carouselRef.current;
+    if (!isMobile || !el) return;
+    const observer = new IntersectionObserver(entries => {
+      const entered = entries.filter(e => e.isIntersecting).map(e => Number((e.target as HTMLElement).dataset.index));
+      if (entered.length) setSeen(prev => new Set([...prev, ...entered]));
+    }, { root: el, threshold: 0.6 });
+    Array.from(el.children).forEach(child => observer.observe(child));
+    return () => observer.disconnect();
+  }, [isMobile, lang, currentExperiences.length]);
+
+  const handleCarouselScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    const first = el.children[0] as HTMLElement | undefined;
+    if (!first) return;
+    const step = first.offsetWidth + 16;
+    setCurrentSlide(Math.min(Math.max(Math.round(el.scrollLeft / step), 0), currentExperiences.length - 1));
+  };
+
+  const goToSlide = (index: number) => {
+    const el = carouselRef.current;
+    const target = el?.children[index] as HTMLElement | undefined;
+    if (el && target) el.scrollTo({ left: target.offsetLeft - el.offsetLeft - (el.clientWidth - target.offsetWidth) / 2, behavior: 'smooth' });
+  };
+
+  const handleCardComplete = (index: number) => {
+    if (isMobile) {
+      completedRef.current.add(`${lang}-${index}`);
+      const done = currentExperiences.filter((_, i) => completedRef.current.has(`${lang}-${i}`)).length;
+      if (done === currentExperiences.length) setIsPronto(true);
+    } else if (index < currentExperiences.length - 1) {
+      setActiveCardIndex(index + 1);
+    } else {
+      setIsPronto(true);
+    }
+  };
 
   const snapshotVisible = heroFinished && hasScrolledIn;
   const entriesCount = useCountUp(currentExperiences.length, snapshotVisible);
@@ -252,21 +308,33 @@ const TestRepository: React.FC<TestRepositoryProps> = ({ lang }) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div
+          ref={carouselRef}
+          onScroll={handleCarouselScroll}
+          className="no-scrollbar flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 md:grid md:grid-cols-1 lg:grid-cols-2 md:gap-10 md:overflow-visible md:pb-0"
+        >
           {currentExperiences.map((project, index) => (
-            <TestCard 
-              key={`${lang}-${project.id}`} 
-              project={project} 
-              t={t} 
-              isActive={index === activeCardIndex}
-              isVisible={index <= activeCardIndex && activeCardIndex !== -1}
-              onAllTextComplete={() => {
-                if (index < currentExperiences.length - 1) {
-                  setActiveCardIndex(index + 1);
-                } else {
-                  setIsPronto(true);
-                }
-              }}
+            <div key={`${lang}-${project.id}`} data-index={index} className="w-[88%] shrink-0 snap-center md:w-auto md:shrink">
+              <TestCard
+                project={project}
+                t={t}
+                isActive={isMobile ? activeCardIndex >= 0 && seen.has(index) : index === activeCardIndex}
+                isVisible={isMobile ? true : index <= activeCardIndex && activeCardIndex !== -1}
+                onAllTextComplete={() => handleCardComplete(index)}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 flex justify-center gap-2 md:hidden" role="tablist" aria-label="Carousel">
+          {currentExperiences.map((project, index) => (
+            <button
+              key={project.id}
+              role="tab"
+              aria-selected={index === currentSlide}
+              aria-label={`${index + 1} / ${currentExperiences.length}`}
+              onClick={() => goToSlide(index)}
+              className={`h-2 rounded-full transition-all duration-300 ${index === currentSlide ? 'w-6 bg-blue-600' : 'w-2 bg-gray-300 dark:bg-gray-600'}`}
             />
           ))}
         </div>

@@ -41,7 +41,6 @@ export const translations = {
         copyEmail: "Copy email address",
         linkedin: "Open LinkedIn",
         github: "Open GitHub",
-        bug: "Report a bug",
       },
     },
     bug: {
@@ -211,7 +210,6 @@ Specialized in identifying critical vulnerabilities and optimizing software qual
         copyEmail: "Copia l'indirizzo email",
         linkedin: "Apri LinkedIn",
         github: "Apri GitHub",
-        bug: "Segnala un bug",
       },
     },
     bug: {
