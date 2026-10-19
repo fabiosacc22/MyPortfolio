@@ -199,3 +199,7 @@ html.custom-cursor textarea { cursor: text !important; }
 html { scrollbar-gutter: stable; }
 html.hero-locked,
 html.hero-locked body { overflow: hidden !important; touch-action: none; }
+
+/* Nasconde la scrollbar di un contenitore a scorrimento laterale (carosello mobile) */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
