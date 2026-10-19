@@ -59,6 +59,25 @@ const LogTerminal = memo(({ logs, active }: { logs: string[]; active: boolean })
   );
 });
 
+// --- 2b. CONTATORE ANIMATO ---
+// Sale da 0 a target in modo graduale quando `start` diventa true; riparte se cambia il target
+const useCountUp = (target: number, start: boolean, stepMs = 220) => {
+  const [state, setState] = useState({ target, value: 0 });
+
+  useEffect(() => {
+    if (!start) return;
+    let value = 0;
+    const timer = setInterval(() => {
+      value += 1;
+      setState({ target, value });
+      if (value >= target) clearInterval(timer);
+    }, stepMs);
+    return () => clearInterval(timer);
+  }, [target, start, stepMs]);
+
+  return start && state.target === target ? state.value : 0;
+};
+
 // --- 3. COMPONENTE CARD ---
 interface TestCardProps {
   project: ProjectLog;
@@ -179,6 +198,11 @@ const TestRepository: React.FC<TestRepositoryProps> = ({ lang }) => {
     };
   }, []);
 
+  const snapshotVisible = heroFinished && hasScrolledIn;
+  const entriesCount = useCountUp(currentExperiences.length, snapshotVisible);
+  const isSynced = entriesCount >= currentExperiences.length;
+  const syncPercent = Math.round((entriesCount / currentExperiences.length) * 100);
+
   return (
     <section ref={sectionRef} className="w-full py-24 bg-white dark:bg-gray-900 font-mono">
       <div className={`w-[92%] max-w-7xl mx-auto transition-opacity duration-1000 ${heroFinished && hasScrolledIn ? 'opacity-100' : 'opacity-0'}`}>
@@ -204,8 +228,11 @@ const TestRepository: React.FC<TestRepositoryProps> = ({ lang }) => {
           
           <div className="bg-white dark:bg-gray-800 p-4 border border-gray-200 rounded text-right">
             <p className="text-[10px] text-gray-400 font-bold uppercase">{t.snapshotTitle}</p>
-            <p className="text-xs text-blue-600 font-black">{t.snapshotEntries}: 0{currentExperiences.length}</p>
-            <p className="text-xs text-green-500 font-black">{t.snapshotStatus}: {t.snapshotSynced}</p>
+            <p className="text-xs text-blue-600 font-black">{t.snapshotEntries}: {String(entriesCount).padStart(2, '0')}</p>
+            <p className={`text-xs font-black ${isSynced ? 'text-green-500' : 'text-yellow-500'}`}>
+              {t.snapshotStatus}: {isSynced ? t.snapshotSynced : `${t.snapshotSyncing} ${syncPercent}%`}
+              {!isSynced && <span className="animate-pulse">...</span>}
+            </p>
           </div>
         </div>
 

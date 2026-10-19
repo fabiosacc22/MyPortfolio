@@ -29,7 +29,7 @@ const Curriculum: React.FC = () => {
         <section className="mb-12 border-b border-gray-800 pb-10 flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex items-center gap-6">
             <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-2 border-blue-600 p-1 overflow-hidden bg-gray-800">
-              <img src="/profileImage.jpeg" alt="Fabio Saccone" className="w-full h-full object-cover rounded-full" />
+              <img src="/profileImage.jpeg" alt="Fabio Saccone" className="w-full h-full object-cover object-top rounded-full" />
             </div>
             <div>
               <h1 className="text-3xl font-black text-white uppercase tracking-tighter">Fabio Antonio Saccone</h1>

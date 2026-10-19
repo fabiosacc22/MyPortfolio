@@ -49,6 +49,23 @@ export const projectsData: { en: ProjectLog[]; it: ProjectLog[] } = {
       ]
     },
     {
+      id: "WRKEX-004",
+      title: "API & Database Validation - ING",
+      company: "ING-Bank",
+      type: "API & DB Validation",
+      status: "RUNNING",
+      description: "API testing through Postman and verification of data across the various databases, ensuring end-to-end consistency between services and persisted data.",
+      tools: ["Postman", "SQL", "API Testing", "Relational DBs"],
+      date: "Feb 2025 - On going",
+      logs: [
+        "Loading Postman collections for ING services...",
+        "Sending API requests and validating responses [OK]",
+        "SQL Query: Cross-checking data across databases...",
+        "Verifying consistency between API output and DB records [OK]",
+        "Defect reporting & retest cycle: ACTIVE"
+      ]
+    },
+    {
       id: "WRKEX-003",
       title: "Insurance Backend Audit",
       company: "RGI Group",
@@ -150,6 +167,23 @@ export const projectsData: { en: ProjectLog[]; it: ProjectLog[] } = {
         "Query SQL: Controllo integrità trascrizione dati [OK]",
         "Analisi flussi di integrazione applicativa...",
         "Gestione ciclo di vita dei difetti: COMPLETATA"
+      ]
+    },
+    {
+      id: "WRKEX-004",
+      title: "Validazione API & Database - ING",
+      company: "ING-Bank",
+      type: "Validazione API & Database",
+      status: "RUNNING",
+      description: "Test delle API tramite Postman e verifiche sui vari database, per garantire la coerenza end-to-end tra servizi e dati persistiti.",
+      tools: ["Postman", "SQL", "API Testing", "Relational DBs"],
+      date: "Feb 2025 - Presente",
+      logs: [
+        "Caricamento collection Postman dei servizi ING...",
+        "Invio richieste API e validazione risposte [OK]",
+        "SQL Query: Verifica incrociata dei dati sui database...",
+        "Controllo coerenza tra output API e record a DB [OK]",
+        "Segnalazione defect & ciclo di retest: ATTIVO"
       ]
     },
     {

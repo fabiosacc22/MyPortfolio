@@ -31,7 +31,8 @@ Specialized in identifying critical vulnerabilities and optimizing software qual
           period: "[ 02/03/2025 - ON GOING ]",
           details: [
             { label: "Unipol (Salesforce):", text: "Functional testing, requirements verification, and defect monitoring via ALM." },
-            { label: "Intesa Sanpaolo:", text: "Flow and integration testing, API validation with Postman, and DB data consistency checks." }
+            { label: "Intesa Sanpaolo:", text: "Flow and integration testing, API validation with Postman, and DB data consistency checks." },
+            { label: "ING-Bank:", text: "API testing with Postman and data verification across the various databases." }
           ]
         },
         {
@@ -76,6 +77,7 @@ Specialized in identifying critical vulnerabilities and optimizing software qual
       snapshotEntries: "WORK_EXPERIENCES",
       snapshotStatus: "DB_STATUS",
       snapshotSynced: "SYNCED",
+      snapshotSyncing: "SYNCING",
       employer: "@_Employer",
       activity: "Activity_Type",
       period: "Time_Period",
@@ -133,7 +135,8 @@ Specializzato nell'identificazione di vulnerabilità critiche e nell'ottimizzazi
           period: "[ 03/02/2025 - IN CORSO ]",
           details: [
             { label: "Unipol (Salesforce):", text: "Test funzionali, verifica requisiti e monitoraggio defect tramite ALM." },
-            { label: "Intesa Sanpaolo:", text: "Test flussi applicativi e integrazione, validazione API tramite Postman e verifica coerenza dati a database." }
+            { label: "Intesa Sanpaolo:", text: "Test flussi applicativi e integrazione, validazione API tramite Postman e verifica coerenza dati a database." },
+            { label: "ING-Bank:", text: "Test delle API tramite Postman e verifiche dei dati sui vari database." }
           ]
         },
         {
@@ -178,6 +181,7 @@ Specializzato nell'identificazione di vulnerabilità critiche e nell'ottimizzazi
       snapshotEntries: "ESPERIENZE_LAVORATIVE",
       snapshotStatus: "STATO_DB",
       snapshotSynced: "SINCRONIZZATO",
+      snapshotSyncing: "SINCRONIZZAZIONE",
       employer: "@_Azienda",
       activity: "Tipo_Attività",
       period: "Periodo_Temporale",

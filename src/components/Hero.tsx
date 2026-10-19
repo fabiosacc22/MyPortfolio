@@ -145,7 +145,7 @@ const handleOpenCv = () => {
                 <div className="relative mb-8 animate-fadeIn">
                   <div className="absolute -inset-2 border border-blue-500/30 rounded-full animate-pulse"></div>
                   <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-gray-900 dark:border-white overflow-hidden shadow-2xl relative z-10">
-                    <img src={siteConfig.profileImage} alt={siteConfig.name} className="w-full h-full object-cover" />
+                    <img src={siteConfig.profileImage} alt={siteConfig.name} className="w-full h-full object-cover object-top" />
                   </div>
                 </div>
 
