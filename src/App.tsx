@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Importa il routing
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -17,6 +17,11 @@ import { Analytics } from '@vercel/analytics/react';
 
 const App: React.FC = () => {
   const [lang, setLang] = useState<'it' | 'en'>('it'); // Impostato default it per coerenza
+
+  // Segnala al loader iniziale (index.html) che l'app React è montata
+  useEffect(() => {
+    window.dispatchEvent(new Event('app-mounted'));
+  }, []);
 
   return (
     <BrowserRouter>

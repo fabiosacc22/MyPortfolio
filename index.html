@@ -31,8 +31,103 @@
         }
       } catch (e) {}
     </script>
+    <style>
+      html.is-loading, html.is-loading body { overflow: hidden !important; height: 100%; touch-action: none; }
+      #boot-loader { position: fixed; inset: 0; z-index: 9998; display: flex; align-items: center; justify-content: center; background: #ffffff; color: #111827; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; transition: opacity 0.45s ease, visibility 0.45s; }
+      html.dark #boot-loader { background: #111827; color: #ffffff; }
+      #boot-loader.boot-done { opacity: 0; visibility: hidden; }
+      .boot-box { width: min(420px, 86vw); }
+      .boot-cmd { color: #2563eb; font-weight: 700; font-size: 14px; margin-bottom: 14px; }
+      html.dark .boot-cmd { color: #60a5fa; }
+      .boot-track { height: 6px; border-radius: 999px; background: rgba(128, 128, 128, 0.25); overflow: hidden; }
+      .boot-fill { height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #2563eb, #22d3ee); }
+      .boot-meta { display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; opacity: 0.7; }
+      .boot-log { margin-top: 18px; font-size: 12px; line-height: 1.7; color: #16a34a; min-height: 88px; }
+      @media (prefers-reduced-motion: reduce) { #boot-loader { transition: none; } }
+    </style>
+    <noscript><style>#boot-loader { display: none; } html.is-loading, html.is-loading body { overflow: auto !important; }</style></noscript>
   </head>
   <body>
+    <div id="boot-loader" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="boot-box">
+        <div class="boot-cmd">&gt; init --qa-profile</div>
+        <div class="boot-track"><div class="boot-fill" id="boot-bar"></div></div>
+        <div class="boot-meta"><span id="boot-status">loading...</span><span id="boot-pct">0%</span></div>
+        <div class="boot-log" id="boot-log"></div>
+      </div>
+    </div>
+    <script>
+      // Caricamento iniziale: la barra avanza in base a eventi reali (DOM, app React, immagine profilo, risorse della pagina)
+      (function () {
+        var loader = document.getElementById('boot-loader');
+        if (!loader) return;
+        if (location.pathname.indexOf('/cv') === 0) { loader.parentNode.removeChild(loader); return; }
+        var root = document.documentElement;
+        root.classList.add('is-loading');
+        var bar = document.getElementById('boot-bar');
+        var pct = document.getElementById('boot-pct');
+        var status = document.getElementById('boot-status');
+        var log = document.getElementById('boot-log');
+        // peso di ogni tappa sul totale (somma = 100)
+        var milestones = { dom: [15, 'dom_ready'], app: [40, 'app_mounted'], image: [20, 'profile_image'], assets: [25, 'assets_loaded'] };
+        var reached = {}, flags = { load: false }, target = 0, shown = 0, finished = false, startedAt = Date.now();
+
+        function reach(key) {
+          if (reached[key]) return;
+          reached[key] = true;
+          target += milestones[key][0];
+          status.textContent = milestones[key][1] + '...';
+          var line = document.createElement('div');
+          line.textContent = '[ OK ] ' + milestones[key][1];
+          log.appendChild(line);
+        }
+        function check() {
+          if (flags.load && reached.app && reached.image) reach('assets');
+        }
+        function finish() {
+          if (finished) return;
+          finished = true;
+          bar.style.width = '100%';
+          pct.textContent = '100%';
+          status.textContent = 'ready';
+          loader.setAttribute('aria-valuenow', '100');
+          loader.classList.add('boot-done');
+          setTimeout(function () {
+            if (loader.parentNode) loader.parentNode.removeChild(loader);
+            root.classList.remove('is-loading');
+            window.__bootDone = true;
+            window.dispatchEvent(new Event('boot-loader-done'));
+          }, 450);
+        }
+
+        if (document.readyState !== 'loading') reach('dom');
+        else document.addEventListener('DOMContentLoaded', function () { reach('dom'); });
+        window.addEventListener('app-mounted', function () { reach('app'); check(); });
+        if (document.readyState === 'complete') { flags.load = true; check(); }
+        else window.addEventListener('load', function () { flags.load = true; check(); });
+
+        var img = new Image();
+        img.onload = img.onerror = function () { reach('image'); check(); };
+        img.src = '/profileImage.jpeg';
+
+        var timer = setInterval(function () {
+          if (finished) { clearInterval(timer); return; }
+          shown += Math.max((target - shown) * 0.12, target > shown ? 0.3 : 0);
+          if (shown > target) shown = target;
+          var value = Math.min(Math.round(shown), 100);
+          bar.style.width = shown + '%';
+          pct.textContent = value + '%';
+          loader.setAttribute('aria-valuenow', String(value));
+          if (reached.assets && shown >= 99.5 && Date.now() - startedAt >= 700) { clearInterval(timer); finish(); }
+        }, 30);
+
+        // Rete molto lenta o errori: non bloccare mai la pagina oltre 10 secondi
+        setTimeout(function () {
+          for (var k in milestones) reach(k);
+          shown = 100;
+        }, 10000);
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
