@@ -35,14 +35,14 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
   // ---------------------
 
   return (
-    <header className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 w-full sticky top-0 z-50 h-20 transition-colors duration-300">
+    <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200/60 dark:border-gray-800/60 w-full sticky top-0 z-50 h-20 transition-colors duration-300">
       <div className="w-[92%] max-w-7xl mx-auto h-full flex items-center justify-between relative">
         
         {/* SINISTRA - Logo con ProfileDropdown */}
         <div className="flex items-center z-50">
           <ProfileDropdown lang={lang}>
             <div className="flex items-center cursor-pointer group">
-              <div className="mr-3 w-8 h-8 bg-gray-900 dark:bg-white flex items-center justify-center rounded shadow-[2px_2px_0px_0px_rgba(59,130,246,1)]">
+              <div className="mr-3 w-8 h-8 bg-gray-900 dark:bg-white flex items-center justify-center rounded-lg shadow-md shadow-blue-500/40 group-hover:-rotate-6 transition-transform">
                 <span className="text-white dark:text-black font-black text-xs">JS</span>
               </div>
               
