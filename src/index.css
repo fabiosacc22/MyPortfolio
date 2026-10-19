@@ -194,3 +194,8 @@ html.custom-cursor textarea { cursor: text !important; }
 }
 .cursor-ring[data-hover='true']::after { transform: scale(1.6); background: rgba(59, 130, 246, 0.18); }
 .cursor-ring[data-pressed='true']::after { transform: scale(0.7); }
+
+/* --- Scroll bloccato durante la sequenza iniziale della Hero (vedi Hero.tsx) --- */
+html { scrollbar-gutter: stable; }
+html.hero-locked,
+html.hero-locked body { overflow: hidden !important; touch-action: none; }

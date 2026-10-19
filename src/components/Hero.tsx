@@ -22,6 +22,7 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
   // --- STATI DEL CONTENUTO ---
   const [descriptionText, setDescriptionText] = useState('');
   const [isScannerOpen, setIsScannerOpen] = useState(false);
+  const [statusHidden, setStatusHidden] = useState(false);
 
   // --- LOGICA CLICK: EMISSIONE SEGNALE PER FOOTER ---
   const handleRunTest = () => {
@@ -50,6 +51,27 @@ const handleOpenCv = () => {
       // Invia il segnale quando l'ultima skill ha finito di caricarsi
       window.dispatchEvent(new Event('hero-animations-complete'));
     }
+  }, [animationsComplete]);
+
+  // Scroll bloccato finché non è finita la prima sequenza di animazioni (skills incluse)
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.add('hero-locked');
+    const unlock = () => root.classList.remove('hero-locked');
+    window.addEventListener('hero-animations-complete', unlock, { once: true });
+    const safety = setTimeout(unlock, 25000); // mai bloccare la pagina all'infinito
+    return () => {
+      clearTimeout(safety);
+      window.removeEventListener('hero-animations-complete', unlock);
+      unlock();
+    };
+  }, []);
+
+  // Dopo l'inizializzazione la barra di stato resta qualche secondo e poi svanisce
+  useEffect(() => {
+    if (!animationsComplete) return;
+    const timer = setTimeout(() => setStatusHidden(true), 6000);
+    return () => clearTimeout(timer);
   }, [animationsComplete]);
 
   // --- 2. AVVIO: aspetta la fine del caricamento iniziale (BootLoader in index.html) ---
@@ -96,7 +118,7 @@ const handleOpenCv = () => {
 
         <div className="w-[92%] max-w-7xl mx-auto flex flex-col items-center text-center py-20">
           
-          <div className="mb-10 w-full max-w-sm text-left">
+          <div className={`mb-10 w-full max-w-sm text-left transition-opacity duration-1000 ${statusHidden ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} aria-hidden={statusHidden}>
             <div className={`text-sm font-bold mb-2 transition-all duration-500 ${animationsComplete ? 'text-green-500' : 'text-blue-600'}`}>
               {animationsComplete && <span className="mr-2 animate-fadeIn">✔</span>}
               {bootStep >= 2 ? (animationsComplete ? t.successMsg : t.command) : '\u00A0'}
