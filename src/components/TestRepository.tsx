@@ -114,15 +114,28 @@ const TestCard = memo(({ project, t, isActive, isVisible, onAllTextComplete }: T
     <div 
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative p-8 rounded-xl transition-all duration-1000 font-mono flex flex-col min-h-[550px]
-        bg-white border border-gray-200 dark:bg-gray-800/40 dark:border-gray-700/50
+      className={`group relative overflow-hidden p-8 rounded-2xl transition-all duration-700 font-mono flex flex-col min-h-[480px]
+        bg-white border border-gray-200 shadow-sm hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-500/50 hover:-translate-y-1
+        dark:bg-gray-800/40 dark:border-gray-700/50 dark:hover:border-blue-500/50
         ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12 pointer-events-none'}`}
     >
-      <div className="flex justify-between items-center mb-8">
+      <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-600 via-cyan-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="flex justify-between items-center mb-8 gap-3">
         <div className="flex items-center gap-2">
           <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-blue-600 animate-pulse' : 'bg-gray-400'}`} />
           <span className="text-[10px] font-black text-blue-600 dark:text-blue-400">REF_ID: {isVisible && project.id}</span>
         </div>
+        {phase >= 1 && (
+          <div className="flex items-center gap-2 animate-fadeIn">
+            <span className="hidden sm:inline text-[10px] text-gray-400 font-bold uppercase">{project.date}</span>
+            <span className={`text-[9px] font-black px-2 py-0.5 rounded-full border ${project.status === 'RUNNING'
+              ? 'text-green-600 dark:text-green-400 border-green-500/40 bg-green-500/10'
+              : 'text-gray-500 dark:text-gray-400 border-gray-300 dark:border-gray-600'}`}>
+              {project.status === 'RUNNING' && <span className="inline-block w-1.5 h-1.5 mr-1 rounded-full bg-green-500 animate-pulse" />}
+              {project.status}
+            </span>
+          </div>
+        )}
       </div>
 
       <h3 className="text-2xl font-black text-gray-900 dark:text-white uppercase mb-8 h-14">
@@ -130,7 +143,7 @@ const TestCard = memo(({ project, t, isActive, isVisible, onAllTextComplete }: T
       </h3>
 
       <div className="space-y-4 mb-8">
-        <div className="flex flex-col border-l-2 border-blue-600 pl-4 bg-gray-50 dark:bg-gray-700/30 py-2">
+        <div className="flex flex-col border-l-2 border-blue-600 pl-4 bg-gray-50 dark:bg-gray-700/30 py-2 rounded-r-lg">
           <span className="text-[10px] text-gray-400 uppercase">{t.employer}</span>
           <span className="text-sm font-black">{phase >= 2 ? <TypewriterText text={project.company} speed={15} /> : null}</span>
         </div>
@@ -156,7 +169,7 @@ const TestCard = memo(({ project, t, isActive, isVisible, onAllTextComplete }: T
         {!isHovered && phase >= 3 && (
           <div className="flex flex-wrap gap-2 py-2">
             {project.tools.map((tool: string) => (
-              <span key={tool} className="text-[9px] font-bold bg-gray-100 dark:bg-gray-800/50 text-gray-500 px-2 py-1 rounded border uppercase">#{tool}</span>
+              <span key={tool} className="text-[9px] font-bold bg-gray-100 dark:bg-gray-800/50 text-gray-500 px-2.5 py-1 rounded-full border border-gray-200 dark:border-gray-700 uppercase">#{tool}</span>
             ))}
           </div>
         )}
@@ -226,7 +239,7 @@ const TestRepository: React.FC<TestRepositoryProps> = ({ lang }) => {
             </div>
           </div>
           
-          <div className="bg-white dark:bg-gray-800 p-4 border border-gray-200 rounded text-right">
+          <div className="bg-white dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm text-right">
             <p className="text-[10px] text-gray-400 font-bold uppercase">{t.snapshotTitle}</p>
             <p className="text-xs text-blue-600 font-black">{t.snapshotEntries}: {String(entriesCount).padStart(2, '0')}</p>
             <p className={`text-xs font-black ${isSynced ? 'text-green-500' : 'text-yellow-500'}`}>

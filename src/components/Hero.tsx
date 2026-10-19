@@ -118,7 +118,8 @@ const handleOpenCv = () => {
   return (
     <>
       <section className="relative w-full min-h-[85vh] flex items-center justify-center bg-white dark:bg-gray-900 transition-colors duration-300 overflow-hidden font-mono">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] -z-10"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,black,transparent)] -z-10"></div>
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[640px] h-[640px] rounded-full bg-blue-500/10 dark:bg-blue-500/15 blur-3xl -z-10 pointer-events-none"></div>
 
         <div className="w-[92%] max-w-7xl mx-auto flex flex-col items-center text-center py-20">
           
@@ -143,13 +144,13 @@ const handleOpenCv = () => {
             {bootStep >= 2 && (
               <>
                 <div className="relative mb-8 animate-fadeIn">
-                  <div className="absolute -inset-2 border border-blue-500/30 rounded-full animate-pulse"></div>
-                  <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-gray-900 dark:border-white overflow-hidden shadow-2xl relative z-10">
+                  <div className="absolute -inset-3 rounded-full bg-gradient-to-tr from-blue-600 via-cyan-400 to-blue-600 opacity-40 blur-md animate-pulse"></div>
+                  <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white dark:border-gray-800 ring-2 ring-blue-500 overflow-hidden shadow-2xl relative z-10">
                     <img src={siteConfig.profileImage} alt={siteConfig.name} className="w-full h-full object-cover object-top" />
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 px-3 py-1 mb-8 rounded border border-green-500/30 bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-widest animate-fadeIn">
+                <div className="flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full border border-green-500/30 bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-widest animate-fadeIn">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
@@ -159,7 +160,7 @@ const handleOpenCv = () => {
 
                 <h1 className="text-4xl md:text-8xl font-black tracking-tighter text-gray-900 dark:text-white mb-6 uppercase">
                   {titlePart1}<br />
-                  {titlePart2 && <span className="bg-black dark:bg-white text-white dark:text-black px-4 py-1 inline-block mt-2">{titlePart2}.</span>}
+                  {titlePart2 && <span className="bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 text-white dark:text-black px-5 py-1 inline-block mt-2 rounded-xl shadow-xl">{titlePart2}.</span>}
                 </h1>
 
                 <p className="max-w-2xl text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-12 min-h-[60px] whitespace-pre-line">
@@ -172,7 +173,7 @@ const handleOpenCv = () => {
                     <button 
                       onClick={handleRunTest} 
                       style={{ transitionDelay: animationsComplete ? '0ms' : '150ms' }}
-                      className={`px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] active:shadow-none active:translate-x-[2px] active:translate-y-[2px] transition-all font-bold uppercase text-sm transform
+                      className={`px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-lg shadow-blue-600/30 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all font-bold uppercase text-sm transform
                         ${isDescriptionDone ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
                     >
                       {t.ctaMain}
@@ -180,7 +181,7 @@ const handleOpenCv = () => {
                     <button 
   onClick={handleOpenCv} 
   style={{ transitionDelay: animationsComplete ? '0ms' : '300ms' }}
-  className={`px-8 py-3 bg-transparent border-2 border-gray-900 dark:border-white text-gray-900 dark:text-white rounded font-bold uppercase text-sm hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition-all transform
+  className={`px-8 py-3 bg-transparent border-2 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-lg font-bold uppercase text-sm hover:border-gray-900 hover:bg-gray-900 hover:text-white dark:hover:border-white dark:hover:bg-white dark:hover:text-gray-900 hover:-translate-y-0.5 transition-all transform
     ${isDescriptionDone ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
 >
   {t.ctaCv}
@@ -193,7 +194,7 @@ const handleOpenCv = () => {
                         <div 
                           key={index} 
                           style={{ transitionDelay: animationsComplete ? '0ms' : `${(index + 3) * 150}ms` }}
-                          className={`w-full border border-gray-200 dark:border-gray-800 p-4 rounded flex items-center justify-center cursor-default hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/10 transition-all duration-300 transform
+                          className={`w-full border border-gray-200 dark:border-gray-800 bg-white/60 dark:bg-gray-800/30 backdrop-blur-sm p-4 rounded-xl flex items-center justify-center cursor-default hover:border-blue-500 hover:shadow-md hover:shadow-blue-500/10 hover:-translate-y-0.5 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50/10 transition-all duration-300 transform
                             ${isDescriptionDone ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'}`}
                         >
                           [ {item} ]
