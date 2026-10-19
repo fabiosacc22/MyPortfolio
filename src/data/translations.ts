@@ -27,12 +27,19 @@ Specialized in identifying critical vulnerabilities and optimizing software qual
       experiences: [
         {
           role: "Quality Assurance",
+          company: "ING-Bank",
+          period: "[ 02/2026 - ON GOING ]",
+          details: [
+            { label: ">", text: "API testing with Postman and data verification across the various databases." }
+          ]
+        },
+        {
+          role: "Quality Assurance",
           company: "Protom Group SPA (Naples) @ Accenture",
-          period: "[ 02/03/2025 - ON GOING ]",
+          period: "[ 02/03/2025 - 02/2026 ]",
           details: [
             { label: "Unipol (Salesforce):", text: "Functional testing, requirements verification, and defect monitoring via ALM." },
-            { label: "Intesa Sanpaolo:", text: "Flow and integration testing, API validation with Postman, and DB data consistency checks." },
-            { label: "ING-Bank:", text: "API testing with Postman and data verification across the various databases." }
+            { label: "Intesa Sanpaolo:", text: "Flow and integration testing, API validation with Postman, and DB data consistency checks." }
           ]
         },
         {
@@ -131,12 +138,19 @@ Specializzato nell'identificazione di vulnerabilità critiche e nell'ottimizzazi
       experiences: [
         {
           role: "Quality Assurance",
+          company: "ING-Bank",
+          period: "[ 02/2026 - IN CORSO ]",
+          details: [
+            { label: ">", text: "Test delle API tramite Postman e verifiche dei dati sui vari database." }
+          ]
+        },
+        {
+          role: "Quality Assurance",
           company: "Protom Group SPA (Napoli) @ Accenture",
-          period: "[ 03/02/2025 - IN CORSO ]",
+          period: "[ 03/02/2025 - 02/2026 ]",
           details: [
             { label: "Unipol (Salesforce):", text: "Test funzionali, verifica requisiti e monitoraggio defect tramite ALM." },
-            { label: "Intesa Sanpaolo:", text: "Test flussi applicativi e integrazione, validazione API tramite Postman e verifica coerenza dati a database." },
-            { label: "ING-Bank:", text: "Test delle API tramite Postman e verifiche dei dati sui vari database." }
+            { label: "Intesa Sanpaolo:", text: "Test flussi applicativi e integrazione, validazione API tramite Postman e verifica coerenza dati a database." }
           ]
         },
         {

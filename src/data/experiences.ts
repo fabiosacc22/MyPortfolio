@@ -15,14 +15,31 @@ export interface ProjectLog {
 export const projectsData: { en: ProjectLog[]; it: ProjectLog[] } = {
   en: [
     {
+      id: "WRKEX-004",
+      title: "API & Database Validation - ING",
+      company: "ING-Bank",
+      type: "API & DB Validation",
+      status: "RUNNING",
+      description: "API testing through Postman and verification of data across the various databases, ensuring end-to-end consistency between services and persisted data.",
+      tools: ["Postman", "SQL", "API Testing", "Relational DBs"],
+      date: "Feb 2026 - On going",
+      logs: [
+        "Loading Postman collections for ING services...",
+        "Sending API requests and validating responses [OK]",
+        "SQL Query: Cross-checking data across databases...",
+        "Verifying consistency between API output and DB records [OK]",
+        "Defect reporting & retest cycle: ACTIVE"
+      ]
+    },
+    {
       id: "WRKEX-001",
       title: "Salesforce QA Strategy - Unipol",
       company: "Accenture",
       type: "Functional & Release Testing",
-      status: "RUNNING",
+      status: "PASSED",
       description: "End-to-end validation of the Salesforce portal. Managing the full defect lifecycle and release coordination to ensure strict compliance with application requirements.",
       tools: ["Salesforce", "Micro Focus ALM", "Standard QA Suite"],
-      date: "Feb 2025 - On going",
+      date: "Feb 2025 – Feb 2026",
       logs: [
         "Syncing with Accenture/Unipol requirements...",
         "Defining Test Cases for Salesforce modules...",
@@ -36,33 +53,16 @@ export const projectsData: { en: ProjectLog[]; it: ProjectLog[] } = {
       title: "Backend & Integration Testing - Intesa",
       company: "Accenture",
       type: "API & DB Validation",
-      status: "RUNNING",
+      status: "PASSED",
       description: "Technical audit of banking integration flows. Database integrity verification and API endpoint validation to ensure maximum system stability and data consistency.",
       tools: ["Postman", "SQL", "API Integration", "Oracle DB"],
-      date: "Feb 2025 - On going",
+      date: "Feb 2025 – Feb 2026",
       logs: [
         "Establishing secure connection to DB...",
         "Validating API endpoints via Postman requests...",
         "SQL Query: Checking data transcription integrity [OK]",
         "Analyzing application integration flows...",
         "Defect lifecycle management: COMPLETED"
-      ]
-    },
-    {
-      id: "WRKEX-004",
-      title: "API & Database Validation - ING",
-      company: "ING-Bank",
-      type: "API & DB Validation",
-      status: "RUNNING",
-      description: "API testing through Postman and verification of data across the various databases, ensuring end-to-end consistency between services and persisted data.",
-      tools: ["Postman", "SQL", "API Testing", "Relational DBs"],
-      date: "Feb 2025 - On going",
-      logs: [
-        "Loading Postman collections for ING services...",
-        "Sending API requests and validating responses [OK]",
-        "SQL Query: Cross-checking data across databases...",
-        "Verifying consistency between API output and DB records [OK]",
-        "Defect reporting & retest cycle: ACTIVE"
       ]
     },
     {
@@ -136,14 +136,31 @@ export const projectsData: { en: ProjectLog[]; it: ProjectLog[] } = {
   ],
   it: [
     {
+      id: "WRKEX-004",
+      title: "Validazione API & Database - ING",
+      company: "ING-Bank",
+      type: "Validazione API & Database",
+      status: "RUNNING",
+      description: "Test delle API tramite Postman e verifiche sui vari database, per garantire la coerenza end-to-end tra servizi e dati persistiti.",
+      tools: ["Postman", "SQL", "API Testing", "Relational DBs"],
+      date: "Feb 2026 - Presente",
+      logs: [
+        "Caricamento collection Postman dei servizi ING...",
+        "Invio richieste API e validazione risposte [OK]",
+        "SQL Query: Verifica incrociata dei dati sui database...",
+        "Controllo coerenza tra output API e record a DB [OK]",
+        "Segnalazione defect & ciclo di retest: ATTIVO"
+      ]
+    },
+    {
       id: "WRKEX-001",
       title: "Strategia QA Salesforce - Unipol",
       company: "Accenture",
       type: "Test Funzionali & Rilascio",
-      status: "RUNNING",
+      status: "PASSED",
       description: "Validazione end-to-end del portale Salesforce. Gestione dell'intero ciclo di vita dei difetti e coordinamento dei rilasci per garantire la conformità ai requisiti applicativi.",
       tools: ["Salesforce", "Micro Focus ALM", "Standard QA Suite"],
-      date: "Feb 2025 - Presente",
+      date: "Feb 2025 – Feb 2026",
       logs: [
         "Sincronizzazione requisiti Accenture/Unipol...",
         "Definizione Test Case per moduli Salesforce...",
@@ -157,33 +174,16 @@ export const projectsData: { en: ProjectLog[]; it: ProjectLog[] } = {
       title: "Backend & Integration Testing - Intesa",
       company: "Accenture",
       type: "Validazione API & Database",
-      status: "RUNNING",
+      status: "PASSED",
       description: "Audit tecnico dei flussi di integrazione bancaria. Verifica dell'integrità del database e validazione degli endpoint API per garantire stabilità di sistema e consistenza dei dati.",
       tools: ["Postman", "SQL", "API Integration", "Oracle DB"],
-      date: "Feb 2025 - Presente",
+      date: "Feb 2025 – Feb 2026",
       logs: [
         "Stabilizzazione connessione sicura al DB...",
         "Validazione endpoint API via richieste Postman...",
         "Query SQL: Controllo integrità trascrizione dati [OK]",
         "Analisi flussi di integrazione applicativa...",
         "Gestione ciclo di vita dei difetti: COMPLETATA"
-      ]
-    },
-    {
-      id: "WRKEX-004",
-      title: "Validazione API & Database - ING",
-      company: "ING-Bank",
-      type: "Validazione API & Database",
-      status: "RUNNING",
-      description: "Test delle API tramite Postman e verifiche sui vari database, per garantire la coerenza end-to-end tra servizi e dati persistiti.",
-      tools: ["Postman", "SQL", "API Testing", "Relational DBs"],
-      date: "Feb 2025 - Presente",
-      logs: [
-        "Caricamento collection Postman dei servizi ING...",
-        "Invio richieste API e validazione risposte [OK]",
-        "SQL Query: Verifica incrociata dei dati sui database...",
-        "Controllo coerenza tra output API e record a DB [OK]",
-        "Segnalazione defect & ciclo di retest: ATTIVO"
       ]
     },
     {
