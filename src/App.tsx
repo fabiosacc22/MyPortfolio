@@ -6,6 +6,10 @@ import TestRepository from './components/TestRepository';
 import Footer from './components/Footer';
 import Curriculum from './components/Curriculum'; // Importa il nuovo componente
 import MouseTorch from './components/MouseTorch';
+import TestInAction from './components/TestInAction';
+import Contact from './components/Contact';
+import CommandPalette from './components/CommandPalette';
+import BugEasterEgg from './components/BugEasterEgg';
 import { Analytics } from '@vercel/analytics/react';
 
 const App: React.FC = () => {
@@ -24,8 +28,12 @@ const App: React.FC = () => {
                 <Header lang={lang} setLang={setLang} />
                 <Hero lang={lang} setLang={setLang} /> 
                 <TestRepository lang={lang} />
+                <TestInAction lang={lang} />
+                <Contact lang={lang} />
               </main>
               <Footer />
+              <CommandPalette lang={lang} setLang={setLang} />
+              <BugEasterEgg lang={lang} />
               <Analytics />
             </div>
           } 

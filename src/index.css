@@ -123,3 +123,28 @@ body, html, #root {
 @media (prefers-reduced-motion: reduce) {
   .name-fx, .glitch-word.is-glitching > span { animation: none; }
 }
+
+/* --- Easter egg: il bug che attraversa la pagina --- */
+@keyframes bugCrawl {
+  from { transform: translateX(-60px); }
+  to { transform: translateX(calc(100vw + 60px)); }
+}
+@keyframes bugWiggle {
+  0%, 100% { transform: rotate(80deg); }
+  50% { transform: rotate(100deg); }
+}
+.bug-crawler {
+  position: fixed;
+  bottom: 12px;
+  left: 0;
+  z-index: 60;
+  padding: 8px;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  animation: bugCrawl 18s linear forwards;
+}
+.bug-crawler > span {
+  display: inline-block;
+  animation: bugWiggle 0.3s ease-in-out infinite;
+}

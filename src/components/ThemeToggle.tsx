@@ -17,6 +17,13 @@ const ThemeToggle: React.FC = () => {
     }
   }, [isDark]);
 
+  // Permette alla palette comandi di cambiare tema
+  useEffect(() => {
+    const toggle = () => setIsDark(d => !d);
+    window.addEventListener('toggle-theme', toggle);
+    return () => window.removeEventListener('toggle-theme', toggle);
+  }, []);
+
   return (
     <button
       onClick={() => setIsDark(!isDark)}

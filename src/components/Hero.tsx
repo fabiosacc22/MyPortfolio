@@ -35,6 +35,16 @@ const handleOpenCv = () => {
   window.open(`/cv/${lang}`, '_blank');
 };
 
+  // Apertura dello scanner da altri componenti (es. palette comandi)
+  useEffect(() => {
+    const open = () => {
+      setIsScannerOpen(true);
+      window.dispatchEvent(new Event('run-test-suite'));
+    };
+    window.addEventListener('open-scanner', open);
+    return () => window.removeEventListener('open-scanner', open);
+  }, []);
+
   // --- 1. NUOVO: SEGNALE PER SBLOCCARE TESTREPOSITORY ---
   useEffect(() => {
     if (animationsComplete) {

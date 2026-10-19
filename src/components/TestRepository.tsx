@@ -220,7 +220,7 @@ const TestRepository: React.FC<TestRepositoryProps> = ({ lang }) => {
   const syncPercent = Math.round((entriesCount / currentExperiences.length) * 100);
 
   return (
-    <section ref={sectionRef} className="w-full py-24 bg-white dark:bg-gray-900 font-mono">
+    <section id="experience" ref={sectionRef} className="w-full py-24 bg-white dark:bg-gray-900 font-mono">
       <div className={`w-[92%] max-w-7xl mx-auto transition-opacity duration-1000 ${heroFinished && hasScrolledIn ? 'opacity-100' : 'opacity-0'}`}>
         
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6">
