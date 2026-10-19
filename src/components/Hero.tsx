@@ -53,19 +53,20 @@ const handleOpenCv = () => {
     }
   }, [animationsComplete]);
 
-  // Scroll bloccato finché non è finita la prima sequenza di animazioni (skills incluse)
+  // Scroll bloccato finché non è finita di scrivere la descrizione (prima sequenza di animazioni)
   useEffect(() => {
     const root = document.documentElement;
     root.classList.add('hero-locked');
-    const unlock = () => root.classList.remove('hero-locked');
-    window.addEventListener('hero-animations-complete', unlock, { once: true });
-    const safety = setTimeout(unlock, 25000); // mai bloccare la pagina all'infinito
+    const safety = setTimeout(() => root.classList.remove('hero-locked'), 25000); // mai bloccare la pagina all'infinito
     return () => {
       clearTimeout(safety);
-      window.removeEventListener('hero-animations-complete', unlock);
-      unlock();
+      root.classList.remove('hero-locked');
     };
   }, []);
+
+  useEffect(() => {
+    if (isDescriptionDone) document.documentElement.classList.remove('hero-locked');
+  }, [isDescriptionDone]);
 
   // Dopo l'inizializzazione la barra di stato resta qualche secondo e poi svanisce
   useEffect(() => {
