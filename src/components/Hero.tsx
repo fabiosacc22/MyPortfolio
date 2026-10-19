@@ -16,7 +16,6 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
 
   // --- STATI DI CONTROLLO FLOW ---
   const [bootStep, setBootStep] = useState(0); 
-  const [progress, setProgress] = useState(0);
   const [isDescriptionDone, setIsDescriptionDone] = useState(false);
   const [animationsComplete, setAnimationsComplete] = useState(false);
   
@@ -53,33 +52,16 @@ const handleOpenCv = () => {
     }
   }, [animationsComplete]);
 
-  // --- 2. SEQUENZA DI BOOT (COMANDO, BARRA, TITOLO) ---
+  // --- 2. AVVIO: aspetta la fine del caricamento iniziale (BootLoader in index.html) ---
   useEffect(() => {
-    let timer: ReturnType<typeof setInterval>;
-
-    if (bootStep === 0) {
-      let i = 0;
-      timer = setInterval(() => {
-        if (++i === t.command.length) {
-          clearInterval(timer);
-          setTimeout(() => setBootStep(1), 500);
-        }
-      }, 60);
-    } else if (bootStep === 1) {
-      timer = setInterval(() => {
-        setProgress(p => {
-          if (p >= 100) {
-            clearInterval(timer);
-            setTimeout(() => setBootStep(2), 300);
-            return 100;
-          }
-          return p + 10;
-        });
-      }, 30);
+    const start = () => setBootStep(step => (step === 0 ? 2 : step));
+    if ((window as { __bootDone?: boolean }).__bootDone) {
+      start();
+      return;
     }
-
-    return () => clearInterval(timer);
-  }, [bootStep, t.command, heroConfig]);
+    window.addEventListener('boot-loader-done', start);
+    return () => window.removeEventListener('boot-loader-done', start);
+  }, []);
 
   // --- 3. GESTIONE SCRITTURA DESCRIZIONE E ATTIVAZIONE CASCADE ---
   useEffect(() => {
@@ -117,18 +99,15 @@ const handleOpenCv = () => {
           <div className="mb-10 w-full max-w-sm text-left">
             <div className={`text-sm font-bold mb-2 transition-all duration-500 ${animationsComplete ? 'text-green-500' : 'text-blue-600'}`}>
               {animationsComplete && <span className="mr-2 animate-fadeIn">✔</span>}
-              {animationsComplete ? t.successMsg : t.command}
-              {!animationsComplete && bootStep === 0 && <span className="animate-pulse">_</span>}
+              {bootStep >= 2 ? (animationsComplete ? t.successMsg : t.command) : '\u00A0'}
             </div>
             
-            {bootStep >= 1 && (
-              <div className="w-full h-1 bg-gray-200 dark:bg-gray-800 rounded overflow-hidden">
-                <div 
-                  className={`h-full transition-all duration-500 ${animationsComplete ? 'bg-green-500' : 'bg-blue-600'}`} 
-                  style={{ width: `${progress}%` }}
-                ></div>
-              </div>
-            )}
+            <div className="w-full h-1 bg-gray-200 dark:bg-gray-800 rounded overflow-hidden">
+              <div 
+                className={`h-full transition-all duration-500 ${animationsComplete ? 'bg-green-500' : 'bg-blue-600'}`} 
+                style={{ width: bootStep >= 2 ? '100%' : '0%' }}
+              ></div>
+            </div>
           </div>
 
           <div className="flex flex-col items-center w-full">
