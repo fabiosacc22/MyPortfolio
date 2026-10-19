@@ -35,6 +35,8 @@ const TypewriterText = memo(({ text, speed = 15, onComplete }: { text: string; s
 // --- 2. GESTORE LOG ---
 const LogTerminal = memo(({ logs, active }: { logs: string[]; active: boolean }) => {
   const [currentLine, setCurrentLine] = useState(0);
+  // Dopo il primo typing completo i log vengono mostrati subito, senza ripetere l'effetto
+  const [played, setPlayed] = useState(false);
   const [prevActive, setPrevActive] = useState(active);
   if (prevActive !== active) {
     setPrevActive(active);
@@ -44,12 +46,13 @@ const LogTerminal = memo(({ logs, active }: { logs: string[]; active: boolean })
   return (
     <div className="space-y-1.5 p-4 bg-gray-950 rounded-lg border border-gray-800">
       {logs.map((log, i) => (
-        <p key={i} className={`text-[10px] font-mono flex gap-2 ${i <= currentLine ? 'opacity-100' : 'opacity-0'}`}>
+        <p key={i} className={`text-[10px] font-mono flex gap-2 ${played || i <= currentLine ? 'opacity-100' : 'opacity-0'}`}>
           <span className="text-blue-500 font-bold">[{i}]</span>
           <span className="text-gray-400">
-            {i === currentLine && active ? (
+            {played ? log : i === currentLine && active ? (
               <TypewriterText text={log} speed={10} onComplete={() => {
                 if (i < logs.length - 1) setCurrentLine(prev => prev + 1);
+                else setPlayed(true);
               }} />
             ) : i < currentLine ? log : null}
           </span>
