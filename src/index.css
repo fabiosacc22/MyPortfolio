@@ -63,3 +63,63 @@ body, html, #root {
 
 
 
+
+/* --- Titolo con il nome --- */
+:root { --name-base: #111827; }
+.dark { --name-base: #ffffff; }
+
+.name-fx {
+  display: inline-block;
+  background-image: linear-gradient(110deg, var(--name-base) 38%, #22d3ee 48%, #3b82f6 52%, var(--name-base) 62%);
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: nameSweep 6s ease-in-out infinite;
+}
+@keyframes nameSweep {
+  0%, 50% { background-position: 100% 0; }
+  100% { background-position: 0% 0; }
+}
+.name-title[data-hover='true'] .name-fx {
+  background-image: radial-gradient(200px circle at var(--mx, 50%) var(--my, 50%), #22d3ee, #3b82f6 45%, var(--name-base) 85%);
+  background-size: auto;
+  background-position: 0 0;
+  animation: none;
+}
+
+.glitch-word { position: relative; display: inline-block; white-space: pre; }
+.glitch-word::before,
+.glitch-word::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.glitch-word.is-glitching::before { opacity: 0.9; color: #f43f5e; animation: glitchA 0.38s steps(2, end); }
+.glitch-word.is-glitching::after { opacity: 0.9; color: #22d3ee; animation: glitchB 0.38s steps(2, end); }
+.glitch-word.is-glitching > span { animation: glitchShake 0.38s steps(3, end); }
+@keyframes glitchA {
+  0% { clip-path: inset(0 0 70% 0); transform: translate(-4px, 0); }
+  25% { clip-path: inset(30% 0 40% 0); transform: translate(4px, 0); }
+  50% { clip-path: inset(60% 0 10% 0); transform: translate(-3px, 0); }
+  75% { clip-path: inset(10% 0 60% 0); transform: translate(3px, 0); }
+  100% { clip-path: inset(0 0 0 0); transform: translate(0, 0); }
+}
+@keyframes glitchB {
+  0% { clip-path: inset(60% 0 10% 0); transform: translate(4px, 0); }
+  25% { clip-path: inset(10% 0 70% 0); transform: translate(-4px, 0); }
+  50% { clip-path: inset(40% 0 30% 0); transform: translate(3px, 0); }
+  75% { clip-path: inset(70% 0 5% 0); transform: translate(-3px, 0); }
+  100% { clip-path: inset(0 0 0 0); transform: translate(0, 0); }
+}
+@keyframes glitchShake {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(2px, -1px); }
+  66% { transform: translate(-2px, 1px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .name-fx, .glitch-word.is-glitching > span { animation: none; }
+}

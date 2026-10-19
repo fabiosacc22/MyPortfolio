@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { siteConfig } from '../data/config';
 import { translations } from '../data/translations';
 import TerminalOverlay from './TerminalOverlay';
+import NameTitle from './NameTitle';
 
 interface HeroProps {
   lang: 'it' | 'en';
@@ -20,8 +21,6 @@ const Hero: React.FC<HeroProps> = ({ lang }) => {
   const [animationsComplete, setAnimationsComplete] = useState(false);
   
   // --- STATI DEL CONTENUTO ---
-  const [titlePart1, setTitlePart1] = useState('');
-  const [titlePart2, setTitlePart2] = useState('');
   const [descriptionText, setDescriptionText] = useState('');
   const [isScannerOpen, setIsScannerOpen] = useState(false);
 
@@ -67,24 +66,6 @@ const handleOpenCv = () => {
           return p + 10;
         });
       }, 30);
-    } else if (bootStep === 2) {
-      let i = 0;
-      timer = setInterval(() => {
-        setTitlePart1(heroConfig.titlePart1.slice(0, ++i));
-        if (i === heroConfig.titlePart1.length) {
-          clearInterval(timer);
-          setBootStep(3);
-        }
-      }, 50);
-    } else if (bootStep === 3) {
-      let i = 0;
-      timer = setInterval(() => {
-        setTitlePart2(heroConfig.titlePart2.slice(0, ++i));
-        if (i === heroConfig.titlePart2.length) {
-          clearInterval(timer);
-          setBootStep(4);
-        }
-      }, 50);
     }
 
     return () => clearInterval(timer);
@@ -158,10 +139,7 @@ const handleOpenCv = () => {
                   {t.status}
                 </div>
 
-                <h1 className="text-4xl md:text-8xl font-black tracking-tighter text-gray-900 dark:text-white mb-6 uppercase">
-                  {titlePart1}<br />
-                  {titlePart2 && <span className="bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 text-white dark:text-black px-5 py-1 inline-block mt-2 rounded-xl shadow-xl">{titlePart2}.</span>}
-                </h1>
+                <NameTitle part1={heroConfig.titlePart1} part2={heroConfig.titlePart2} onRevealed={() => setBootStep(4)} />
 
                 <p className="max-w-2xl text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-12 min-h-[60px] whitespace-pre-line">
                   {descriptionText}
