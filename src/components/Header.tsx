@@ -21,8 +21,6 @@ const Header: React.FC<HeaderProps> = ({ lang, setLang }) => {
 
   useEffect(() => {
     let i = 0;
-    setDisplayText(""); // Reset all'avvio
-    
     const typingInterval = setInterval(() => {
       if (i < fullText.length) {
         setDisplayText(fullText.substring(0, i + 1));

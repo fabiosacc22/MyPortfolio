@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Importa il routing
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import TestRepository from './components/TestRepository';
 import Footer from './components/Footer';
-import Curriculum from './components/Curriculum'; // Importa il nuovo componente
+import Curriculum from './components/Curriculum';
 import MouseTorch from './components/MouseTorch';
 import TestInAction from './components/TestInAction';
 import Contact from './components/Contact';
@@ -15,8 +15,26 @@ import ScrollProgress from './components/ScrollProgress';
 import CustomCursor from './components/CustomCursor';
 import { Analytics } from '@vercel/analytics/react';
 
-const App: React.FC = () => {
-  const [lang, setLang] = useState<'it' | 'en'>('it'); // Impostato default it per coerenza
+type Lang = 'it' | 'en';
+
+const LANG_KEY = 'lang';
+
+const getInitialLang = (): Lang => {
+  try {
+    const saved = localStorage.getItem(LANG_KEY);
+    if (saved === 'it' || saved === 'en') return saved;
+  } catch { /* storage non disponibile */ }
+  return 'it';
+};
+
+const App = () => {
+  const [lang, setLang] = useState<Lang>(getInitialLang);
+
+  // Mantiene la lingua dopo il refresh e la riflette sull'attributo lang del documento
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    try { localStorage.setItem(LANG_KEY, lang); } catch { /* storage non disponibile */ }
+  }, [lang]);
 
   // Segnala al loader iniziale (index.html) che l'app React è montata
   useEffect(() => {
@@ -26,7 +44,7 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* ROTTA HOME: Contiene tutto il tuo portfolio attuale */}
+        {/* ROTTA HOME */}
         <Route 
           path="/" 
           element={
@@ -49,7 +67,7 @@ const App: React.FC = () => {
           } 
         />
 
-        {/* ROTTA CV: Carica solo la pagina del curriculum */}
+        {/* ROTTA CV: solo la pagina del curriculum */}
         <Route path="/cv/:lang" element={<Curriculum />} />
       </Routes>
     </BrowserRouter>

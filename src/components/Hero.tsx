@@ -90,9 +90,12 @@ const handleOpenCv = () => {
   useEffect(() => {
     if (bootStep === 4) {
       let i = 0;
+      // Il reset a ogni cambio lingua riavvia l'animazione: sincronizzazione voluta
+      /* eslint-disable react-hooks/set-state-in-effect */
       setIsDescriptionDone(false);
       setAnimationsComplete(false);
       setDescriptionText('');
+      /* eslint-enable react-hooks/set-state-in-effect */
 
       const timer = setInterval(() => {
         const fullText = t.description;
